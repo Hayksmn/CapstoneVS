@@ -9,6 +9,7 @@ using namespace std;
 /// Mains this instance.
 /// </summary>
 /// <returns> returns int to finish the application</returns>
+
 int main(void) {
     GLFWwindow* window;
 
