@@ -4,6 +4,11 @@
 
 using namespace std;
 
+
+/// <summary>
+/// Mains this instance.
+/// </summary>
+/// <returns> returns int to finish the application</returns>
 int main(void) {
     GLFWwindow* window;
 
