@@ -1,4 +1,4 @@
 # CapstoneVS
 Capstone Project in Visual Studio
 # Formatting
-tab size - 4 spaces
+tab size - 8 spaces
