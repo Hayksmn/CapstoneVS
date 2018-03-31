@@ -25,7 +25,7 @@ Engine::~Engine() {}
 /// </summary>
 /// <param name="windowTitle">Takes the window title as a char* parameter.</param>
 /// <returns>boolean value indicating whether initialization has concluded successfully or not</returns>
-bool Engine::Initialize(char* windowTitle) {
+bool Engine::initialize(char* windowTitle) {
 
         //Initializing GLFW
         if (!glfwInit()) {
@@ -70,20 +70,18 @@ bool Engine::Initialize(char* windowTitle) {
 /// <summary>
 /// Updates the back buffer.
 /// </summary>
-void Engine::Update() {
+void Engine::update() {
         glfwPollEvents();
 }
 
 /// <summary>
-/// Renders everything in the back buffer.
+/// Starts rendering everything in back buffer.
 /// </summary>
-void Engine::Render() {
+void Engine::beginRender() {
         glClearColor(0, 0, 1, 1); //cleared back buffer and set to blue
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //cleared the depth buffer
+}
 
-
-
-
+void Engine::endRender(){
         glfwSwapBuffers(window);
-
 }

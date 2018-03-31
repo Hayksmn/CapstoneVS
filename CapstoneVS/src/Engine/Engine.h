@@ -7,8 +7,6 @@
 
 using namespace std;
 
-
-
 class Engine {
 public:
         static int SCREEN_WIDTH;
@@ -17,16 +15,14 @@ public:
         Engine();
         ~Engine();
 
-        bool Initialize(char* windowTitle);
+        bool initialize(char* windowTitle);
 
-        void Update(); //update everyting
-        void Render(); //render all the updates
+        void update(); 
+        void beginRender(); 
+        void endRender();
 
 private:
         static GLFWwindow* window;
 };
-
-
-
 #endif // !MAIN_ENGINE
 
