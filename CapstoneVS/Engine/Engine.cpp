@@ -1,4 +1,6 @@
 #include "Engine.h"
+#include "IO\Mouse.h"
+#include "IO\Keyboard.h"
 
 /// <summary>
 /// Initialize static variables.
@@ -39,11 +41,14 @@ bool Engine::initialize(char* windowTitle) {
                 return false;
         }
 
-        //GLFWl Setup
+        //GLFW Setup
         glfwMakeContextCurrent(window);
         int width, height;
         glfwGetFramebufferSize(window, &width, &height);
         glfwSwapInterval(1);
+        glfwSetCursorPosCallback(window, Mouse::mousePosCallback);
+        glfwSetMouseButtonCallback(window, Mouse::mouseButtonCallback);
+        glfwSetKeyCallback(window, Keyboard::keyCallback);
 
         const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         int xPos = (mode->width - SCREEN_WIDTH) / 2;
