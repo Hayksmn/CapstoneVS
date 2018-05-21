@@ -9,6 +9,16 @@ private:
 
 public:
 
+	PositionComponent() {
+		xpos = 0;
+		ypos = 0;
+	}
+
+	PositionComponent(int x, int y) {
+		xpos = x;
+		ypos = y;
+	}
+
 	int x() {
 		return xpos;
 	}
@@ -22,12 +32,20 @@ public:
 	}
 
 	void update() override {
-		xpos++;
-		ypos++;
+		//xpos++;
+		//ypos++;
 	}
 
 	void setPos(int x, int y) {
 		xpos = x;
 		ypos = y;
+	}
+
+	void changeXby(int dx) {
+		xpos += dx;
+	}
+
+	void changeYby(int dy) {
+		ypos += dy;
 	}
 };

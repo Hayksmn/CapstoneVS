@@ -17,46 +17,56 @@ int main(void) {
         Engine engine;
         engine.initialize((char*)"Capstone"); //TODO have to look into why i have to typecast const char* to char* for this to work
 
-        Sprite sprite = Sprite("Assets/Art/Biplane.png", 0, 0);
-        sprite.setScale(0.25f);
+        //Sprite sprite = Sprite("Assets/Art/Biplane.png", 0, 0);
+        //sprite.setScale(0.25f);
 
 		newSprite.addComponent<PositionComponent>();
+		newSprite.addComponent<SpriteComponent>("Assets/Art/Biplane.png");
+
+		newSprite.getComponent<PositionComponent>().setPos(100, 100);
 
         bool running = true;
         while (running) {
                 engine.update();
-                sprite.update();
-				manager.update();
-				std::cout << newSprite.getComponent<PositionComponent>().x() << ", " <<
-					newSprite.getComponent<PositionComponent>().y() << std::endl;
+                //sprite.update();
+				
+				//std::cout << newSprite.getComponent<PositionComponent>().x() << ", " <<
+				//	newSprite.getComponent<PositionComponent>().y() << std::endl;
 
                 //sprite.moveTo((float)Mouse::getMouseX(), (float)Mouse::getMouseY());
 
                 if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_LEFT)) {
-                        sprite.rotateBy(10);
+                        //sprite.rotateBy(10);
                 }
                 if (Mouse::buttonUp(GLFW_MOUSE_BUTTON_RIGHT)) {
-                        sprite.rotateBy(-10);
+                        //sprite.rotateBy(-10);
                 }
                 if (Mouse::button(GLFW_MOUSE_BUTTON_MIDDLE)) {
-                        sprite.rotateBy(-10);
+                        //sprite.rotateBy(-10);
                 }
 
                 if (Keyboard::key(GLFW_KEY_W)) {
-                        sprite.moveUp();
+                        //sprite.moveUp();
+						newSprite.getComponent<PositionComponent>().changeYby(5);
                 }
                 if (Keyboard::key(GLFW_KEY_S)) {
-                        sprite.moveDown();
+                        //sprite.moveDown();
+						newSprite.getComponent<PositionComponent>().changeYby(-5);
                 }
                 if (Keyboard::key(GLFW_KEY_A)) {
-                        sprite.moveLeft();
+                        //sprite.moveLeft();
+						newSprite.getComponent<PositionComponent>().changeXby(-5);
                 }
                 if (Keyboard::key(GLFW_KEY_D)) {
-                        sprite.moveRight();
-                }
+                        //sprite.moveRight();
+						newSprite.getComponent<PositionComponent>().changeXby(5);
+				}
 
+				manager.update();
+				//manager.resfresh();
                 engine.beginRender();
-                sprite.render();
+				manager.draw();
+                //sprite.render();
                 engine.endRender();
         }
 }
