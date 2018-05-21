@@ -20,10 +20,8 @@ int main(void) {
         //Sprite sprite = Sprite("Assets/Art/Biplane.png", 0, 0);
         //sprite.setScale(0.25f);
 
-		newSprite.addComponent<PositionComponent>();
+		newSprite.addComponent<TransformComponent>(100, 100);
 		newSprite.addComponent<SpriteComponent>("Assets/Art/Biplane.png");
-
-		newSprite.getComponent<PositionComponent>().setPos(100, 100);
 
         bool running = true;
         while (running) {
@@ -47,19 +45,19 @@ int main(void) {
 
                 if (Keyboard::key(GLFW_KEY_W)) {
                         //sprite.moveUp();
-						newSprite.getComponent<PositionComponent>().changeYby(5);
+						newSprite.getComponent<TransformComponent>().position.y += 5;
                 }
                 if (Keyboard::key(GLFW_KEY_S)) {
                         //sprite.moveDown();
-						newSprite.getComponent<PositionComponent>().changeYby(-5);
+						newSprite.getComponent<TransformComponent>().position.y -= 5;
                 }
                 if (Keyboard::key(GLFW_KEY_A)) {
                         //sprite.moveLeft();
-						newSprite.getComponent<PositionComponent>().changeXby(-5);
+						newSprite.getComponent<TransformComponent>().position.x -= 5;
                 }
                 if (Keyboard::key(GLFW_KEY_D)) {
                         //sprite.moveRight();
-						newSprite.getComponent<PositionComponent>().changeXby(5);
+						newSprite.getComponent<TransformComponent>().position.x += 5;
 				}
 
 				manager.update();

@@ -162,12 +162,12 @@
     <ClInclude Include="ECS\Components.h" />
     <ClInclude Include="ECS\ECS.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
+    <ClInclude Include="ECS\vec2.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Graphics\Sprite.h" />
     <ClInclude Include="Engine\Graphics\Texture.h" />
     <ClInclude Include="Engine\IO\Keyboard.h" />
     <ClInclude Include="Engine\IO\Mouse.h" />
-    <ClInclude Include="ECS\PositionComponent.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,7 @@
 class SpriteComponent : public Component {
 
 private:
-	PositionComponent *position;
+	TransformComponent *transform;
 	Texture *texture;
 
 public:
@@ -21,7 +21,7 @@ public:
 	};
 
 	void init() override {
-		position = &entity->getComponent<PositionComponent>();
+		transform = &entity->getComponent<TransformComponent>();
 		 
 	}
 
@@ -35,7 +35,7 @@ public:
 		glLoadIdentity();
 
 		//translations -> rotations -> scaling
-		glTranslatef(position->x(), position->y(), 0);
+		glTranslatef(transform->position.x, transform->position.y, 0);
 		glRotatef(0, 0, 0, 1);
 		glScalef(0.25, 0.25, 1);
 
