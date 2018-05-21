@@ -4,7 +4,12 @@
 #include "Engine\IO\Keyboard.h"
 #include <iostream>
 
+#include "Components.h"
+
 using namespace std;
+
+Manager manager;
+auto& newSprite(manager.addEntity());
 
 int main(void) {
         cout << "Hello!" << endl;
@@ -15,10 +20,15 @@ int main(void) {
         Sprite sprite = Sprite("Assets/Art/Biplane.png", 0, 0);
         sprite.setScale(0.25f);
 
+		newSprite.addComponent<PositionComponent>();
+
         bool running = true;
         while (running) {
                 engine.update();
                 sprite.update();
+				manager.update();
+				std::cout << newSprite.getComponent<PositionComponent>().x() << ", " <<
+					newSprite.getComponent<PositionComponent>().y() << std::endl;
 
                 //sprite.moveTo((float)Mouse::getMouseX(), (float)Mouse::getMouseY());
 
