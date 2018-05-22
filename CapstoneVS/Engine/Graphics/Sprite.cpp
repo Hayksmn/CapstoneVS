@@ -29,7 +29,8 @@ void Sprite::update() {
 }
 
 void Sprite::render() {
-        glEnable(GL_TEXTURE_2D);
+        
+		glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texture.getId());
         glLoadIdentity();
 

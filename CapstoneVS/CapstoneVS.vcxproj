@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ECS\TransformComponent.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Graphics\Sprite.cpp" />
     <ClCompile Include="Engine\Graphics\Texture.cpp" />
