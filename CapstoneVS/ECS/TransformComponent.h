@@ -5,7 +5,11 @@
 // add other transformations here upon necessity 
 class TransformComponent : public Component {
 
-	
+public:
+
+	TransformComponent();
+	TransformComponent(float x, float y);
+
 	void speedTo(float x);
 	void speedBy(float x);
 
@@ -23,22 +27,10 @@ class TransformComponent : public Component {
 	void setScale(float x);
 	void setScale(float x, float y);
 
-private:
+
 	vec2<float> position;
 	float speed;
 	float rot;
 	float xScale;
 	float yScale;
-
-
-	TransformComponent() {
-		position.x = 0.0f;
-		position.y = 0.0f;
-		speed = 5.0f;
-	}
-
-	TransformComponent(float x, float y) {
-		position.x = x;
-		position.y = y;
-	}
 };

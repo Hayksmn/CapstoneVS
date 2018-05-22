@@ -2,6 +2,8 @@
 
 #include "Components.h"
 #include <GLFW\glfw3.h>
+
+#include "ECS/TransformComponent.h"
 #include "Engine/Graphics/Texture.h"
 
 #include <iostream>

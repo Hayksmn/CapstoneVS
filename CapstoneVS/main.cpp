@@ -45,19 +45,19 @@ int main(void) {
 
                 if (Keyboard::key(GLFW_KEY_W)) {
                         //sprite.moveUp();
-						newSprite.getComponent<TransformComponent>().position.y += 5;
+						newSprite.getComponent<TransformComponent>().moveBy(0, 5);
                 }
                 if (Keyboard::key(GLFW_KEY_S)) {
                         //sprite.moveDown();
-						newSprite.getComponent<TransformComponent>().position.y -= 5;
+						newSprite.getComponent<TransformComponent>().moveBy(0,-5);
                 }
                 if (Keyboard::key(GLFW_KEY_A)) {
                         //sprite.moveLeft();
-						newSprite.getComponent<TransformComponent>().position.x -= 5;
+						newSprite.getComponent<TransformComponent>().moveBy(-5, 0);
                 }
                 if (Keyboard::key(GLFW_KEY_D)) {
                         //sprite.moveRight();
-						newSprite.getComponent<TransformComponent>().position.x += 5;
+						newSprite.getComponent<TransformComponent>().moveBy(5, 0);
 				}
 
 				manager.update();

@@ -1,5 +1,19 @@
 #include "TransformComponent.h"
 
+
+
+TransformComponent::TransformComponent() {
+	position.x = 0.0f;
+	position.y = 0.0f;
+	speed = 5.0f;
+}
+
+TransformComponent::TransformComponent(float x, float y) {
+	position.x = x;
+	position.y = y;
+	speed = 5.0f;
+}
+
 void TransformComponent::speedTo(float x) {
 	speed = x;
 }
@@ -51,3 +65,4 @@ void TransformComponent::setScale(float x, float y) {
 	xScale = x;
 	yScale = y;
 }
+
