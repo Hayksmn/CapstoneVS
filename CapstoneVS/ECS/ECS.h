@@ -30,7 +30,7 @@ using ComponentArray = std::array<Component*, maxComponents>;
 class Component {
 
 public:
-	Entity * entity;
+	Entity* entity;
 
 	virtual void init() {};
 	virtual void update() {};
@@ -69,7 +69,8 @@ public:
 	}
 
 	template <typename T> bool hasComponent() const {
-		return componentBitSet[getComponentTypeID<T>()];
+		//return std::get<getComponentTypeID<T>()>(componentBitSet);
+		return componentBitSet[getComponentTypeID<T>()]; 
 	}
 
 	template <typename T, typename... TArgs>

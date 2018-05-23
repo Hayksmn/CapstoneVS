@@ -20,8 +20,14 @@ int main(void) {
         //Sprite sprite = Sprite("Assets/Art/Biplane.png", 0, 0);
         //sprite.setScale(0.25f);
 
-		newSprite.addComponent<TransformComponent>(100, 100);
-		newSprite.addComponent<SpriteComponent>("Assets/Art/Biplane.png");
+		newSprite.addComponent<TransformComponent>(100, 100, 10);
+		newSprite.addComponent<SpriteComponent>("Assets/Art/circle.png");
+		auto tex = newSprite.getComponent<SpriteComponent>().getTextureParams();
+
+		//todo: see why this gives a delay
+		newSprite.getComponent<TransformComponent>().setScale(10/(float)tex.getWidth());
+
+		cout << (newSprite.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
 
         bool running = true;
         while (running) {
@@ -31,7 +37,7 @@ int main(void) {
 				//std::cout << newSprite.getComponent<PositionComponent>().x() << ", " <<
 				//	newSprite.getComponent<PositionComponent>().y() << std::endl;
 
-                //sprite.moveTo((float)Mouse::getMouseX(), (float)Mouse::getMouseY());
+                newSprite.getComponent<TransformComponent>().moveTo((float)Mouse::getMouseX(), (float)Mouse::getMouseY());
 
                 if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_LEFT)) {
                         //sprite.rotateBy(10);

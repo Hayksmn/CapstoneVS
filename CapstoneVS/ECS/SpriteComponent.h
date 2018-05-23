@@ -22,6 +22,11 @@ public:
 		texture = new Texture(imagePath);
 	};
 
+	Texture getTextureParams()
+	{
+		return *texture;
+	}
+
 	void init() override {
 		transform = &entity->getComponent<TransformComponent>();
 		 
@@ -39,7 +44,7 @@ public:
 		//translations -> rotations -> scaling
 		glTranslatef(transform->position.x, transform->position.y, 0);
 		glRotatef(0, 0, 0, 1);
-		glScalef(0.25, 0.25, 1);
+		glScalef(transform->xScale, transform->yScale, 1);
 
 		//Rendering
 		glColor4f(1, 1, 1, 1);
