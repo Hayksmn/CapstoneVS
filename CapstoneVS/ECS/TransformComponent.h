@@ -11,15 +11,29 @@ class TransformComponent : public Component {
 public:
 
 	vec2<float> position;
-	float speed;
-	float rot;
-	float xScale;
-	float yScale;
-	float rad;
+	vec2<float> velocity;
 
+	// default values
+	float width = 32;
+	float height = 32;
+
+	float speed = 5;
+	float rot = 0;
+	float xScale = 1;
+	float yScale = 1;
 
 	TransformComponent();
-	TransformComponent(float x, float y, float r);
+	TransformComponent(float x, float y);
+
+	void init() override {
+		velocity.x = 0;
+		velocity.y = 0;
+	}
+
+	void update() override {
+		position.x += velocity.x*speed;
+		position.y += velocity.y*speed;
+	}
 
 	void speedTo(float x);
 	void speedBy(float x);
@@ -38,21 +52,20 @@ public:
 	void setScale(float x);
 	void setScale(float x, float y);
 
-
-
+	void setWidth(float w);
+	void setHeight(float h);
 
 };
 
 TransformComponent::TransformComponent() {
 	position.x = 0.0f;
 	position.y = 0.0f;
-	speed = 5.0f;
+	speed = 3.0f;
 }
 
-TransformComponent::TransformComponent(float x, float y, float r) {
+TransformComponent::TransformComponent(float x, float y) {
 	position.x = x;
 	position.y = y;
-	rad = r;
 	speed = 5.0f;
 }
 
@@ -107,4 +120,12 @@ void TransformComponent::setScale(float x) {
 void TransformComponent::setScale(float x, float y) {
 	xScale = x;
 	yScale = y;
+}
+
+void TransformComponent::setWidth(float w) {
+	width = w;
+}
+
+void TransformComponent::setHeight(float h) {
+	height = h;
 }

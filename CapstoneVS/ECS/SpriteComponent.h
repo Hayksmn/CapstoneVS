@@ -28,12 +28,16 @@ public:
 	}
 
 	void init() override {
+		if (!entity->hasComponent<TransformComponent>()) {
+			&entity->addComponent<TransformComponent>();
+		}
 		transform = &entity->getComponent<TransformComponent>();
-		 
+
+		transform->setScale(transform->width / (float)texture->getWidth(), transform->height / (float)texture->getHeight());
 	}
 
 	void update() override {
-
+		
 	}
 
 	void draw() override {
