@@ -32,7 +32,7 @@ int main(void) {
 		cout << (newSprite.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
 
         bool running = true;
-        while (running) {
+        while (!glfwWindowShouldClose(Engine::window)) {
                 engine.update();
 				
                 //newSprite.getComponent<TransformComponent>().moveTo((float)Mouse::getMouseX(), (float)Mouse::getMouseY());

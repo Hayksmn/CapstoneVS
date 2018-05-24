@@ -21,8 +21,9 @@ public:
         void beginRender(); 
         void endRender();
 
-private:
         static GLFWwindow* window;
+private:
+        
 };
 #endif // !MAIN_ENGINE
 
