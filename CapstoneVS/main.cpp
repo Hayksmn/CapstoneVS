@@ -42,7 +42,7 @@ int main(void) {
 		}
 
         bool running = true;
-        while (running) {
+        while (!glfwWindowShouldClose(Engine::window)) {
                 engine.update();
 
 				manager.update();
