@@ -31,8 +31,8 @@ public:
 	}
 
 	void update() override {
-		center.x = transform->position.x;
-		center.y = transform->position.y;
+		center.x = transform->position.x + transform->width / 2;
+		center.y = transform->position.y + transform->height / 2;
 		rad = transform->width / 2;
 	}
 };

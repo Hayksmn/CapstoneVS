@@ -4,6 +4,8 @@
 #include "ECS/Components.h"
 #include "ECS/Collision.h"
 
+#include "Utils.h"
+
 using namespace std;
 
 Manager manager;
@@ -46,6 +48,8 @@ int main(void) {
                 engine.update();
 
 				manager.update();
+
+				vector<pair<CircleColliderComponent*, CircleColliderComponent*>> currentCollisions;
 				
 				for (int i = 0; i < Game::colliders.size() - 1; i++)
 				{
@@ -64,6 +68,8 @@ int main(void) {
 									-overlap * (srcCol->center.y - targetCol->center.y) / dst);
 								targetCol->transform->moveBy(overlap * (srcCol->center.x - targetCol->center.x) / dst,
 									overlap * (srcCol->center.y - targetCol->center.y) / dst);
+
+								currentCollisions.push_back({ srcCol, targetCol });
 							}
 						}
 					}
@@ -73,6 +79,11 @@ int main(void) {
 
 				engine.beginRender();
 				manager.draw();
+
+				for (auto c : currentCollisions) {
+					Utils::drawLine(c.first->center, c.second->center);
+				}
+
                 engine.endRender();
 
 				Keyboard::reset();
