@@ -23,9 +23,9 @@ int main(void) {
 
 		ball1.addComponent<TransformComponent>(100, 100);
 		ball1.addComponent<SpriteComponent>("Assets/Art/circle.png");
+		ball1.addComponent<CircleColliderComponent>("initial ball");
 		ball1.addComponent<TouchComponent>();
 		ball1.addComponent<KeyboardController>(); 
-		ball1.addComponent<CircleColliderComponent>("initial ball");
 		//auto tex = newSprite.getComponent<SpriteComponent>().getTextureParams();
 
 		//todo: see why this gives a delay
@@ -38,9 +38,9 @@ int main(void) {
 			//TODO: setting width and height is buggy 
 			ball1.addComponent<TransformComponent>(50*i, 50*i);
 			ball1.addComponent<SpriteComponent>("Assets/Art/circle.png");
+			ball1.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 			ball1.addComponent<TouchComponent>();
 			ball1.addComponent<KeyboardController>();
-			ball1.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		}
 
         bool running = true;
@@ -54,6 +54,14 @@ int main(void) {
 				for (int i = 0; i < Game::colliders.size() - 1; i++)
 				{
 					CircleColliderComponent *srcCol = Game::colliders[i];
+
+					//temporary
+					if (srcCol->center.x < 0) srcCol->transform->position.x += Engine::SCREEN_WIDTH;
+					if (srcCol->center.x >= Engine::SCREEN_WIDTH) srcCol->transform->position.x -= Engine::SCREEN_WIDTH;
+					if (srcCol->center.y < 0) srcCol->transform->position.y += Engine::SCREEN_HEIGHT;
+					if (srcCol->center.y >= Engine::SCREEN_HEIGHT) srcCol->transform->position.y -= Engine::SCREEN_HEIGHT;
+					
+
 					for (int j = i + 1; j < Game::colliders.size(); j++)
 					{
 						CircleColliderComponent *targetCol = Game::colliders[j];

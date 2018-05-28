@@ -150,7 +150,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ECS\CircleColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
+    <ClCompile Include="ECS\KeyboardController.cpp" />
+    <ClCompile Include="ECS\SpriteComponent.cpp" />
+    <ClCompile Include="ECS\TouchComponent.cpp" />
+    <ClCompile Include="ECS\TransformComponent.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Graphics\Sprite.cpp" />
     <ClCompile Include="Engine\Graphics\Texture.cpp" />

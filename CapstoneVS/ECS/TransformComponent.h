@@ -22,95 +22,42 @@ public:
 	float xScale = 1;
 	float yScale = 1;
 
-	TransformComponent() {
-		position.x = 0.0f;
-		position.y = 0.0f;
-		speed = 3.0f;
-	}
+	TransformComponent();
 
-	TransformComponent(float x, float y) {
-		position.x = x;
-		position.y = y;
-		speed = 5.0f;
-	}
+	TransformComponent(float x, float y);
 
-	TransformComponent(float x, float y, float w, float h) {
-		position.x = x;
-		position.y = y;
-		width = w;
-		height = h;
-		speed = 5.0f;
-	}
+	TransformComponent(float x, float y, float w, float h);
 
-	void init() override {
-		velocity.x = 0;
-		velocity.y = 0;
-	}
+	void init() override;
 
-	void update() override {
-		position.x += velocity.x*speed;
-		position.y += velocity.y*speed;
-	}
+	void update() override;
 
-	void speedTo(float x) {
-		speed = x;
-	}
+	void speedTo(float x);
 
-	void speedBy(float x) {
-		speed += x;
-	}
+	void speedBy(float x);
 
-	void moveTo(float x, float y) {
-		position.x = x;
-		position.y = y;
-	}
+	void moveTo(float x, float y);
 
-	void moveBy(float x, float y) {
-		position.x += x;
-		position.y += y;
-	}
+	void moveBy(float x, float y);
 
-	void moveLeft() {
-		position.x -= speed;
-	}
+	void moveLeft();
 
-	void  moveRight() {
-		position.x += speed;
-		speed += speed;
-	}
+	void  moveRight();
 
-	void  moveUp() {
-		position.y += speed;
-	}
+	void  moveUp();
 
-	void  moveDown() {
-		position.y -= speed;
-	}
+	void  moveDown();
 
-	void  rotateTo(float x) {
-		rot = x;
-	}
+	void  rotateTo(float x);
 
-	void rotateBy(float x) {
-		rot += x;
-	}
+	void rotateBy(float x);
 
-	void setScale(float x) {
-		xScale = x;
-		yScale = x;
-	}
+	void setScale(float x);
 
-	void setScale(float x, float y) {
-		xScale = x;
-		yScale = y;
-	}
+	void setScale(float x, float y);
 
-	void setWidth(float w) {
-		width = w;
-	}
+	void setWidth(float w);
 
-	void setHeight(float h) {
-		height = h;
-	}
+	void setHeight(float h);
 };
 
