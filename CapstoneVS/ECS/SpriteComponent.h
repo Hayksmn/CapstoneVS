@@ -1,10 +1,8 @@
 #pragma once
 
+#include "ECS.h"
 #include <GLFW\glfw3.h>
-
-#include "ECS/TransformComponent.h"
 #include "Engine/Graphics/Texture.h"
-
 #include <iostream>
 #include <string>
 

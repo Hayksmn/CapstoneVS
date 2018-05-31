@@ -4,9 +4,7 @@
 #include <string>
 #include <iostream>
 #include "Game.h"
-#include "ECS.h"
-
-class TransformComponent;
+#include "Components.h"
 
 class CircleColliderComponent : public Component {
 
