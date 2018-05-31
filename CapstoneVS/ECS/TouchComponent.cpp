@@ -6,6 +6,9 @@ void TouchComponent::init() {
 	if (!entity->hasComponent<TransformComponent>()) {
 		&entity->addComponent<TransformComponent>();
 	}
+	if (!entity->hasComponent<CircleColliderComponent>()) {
+		&entity->addComponent<CircleColliderComponent>();
+	}
 	transform = &entity->getComponent<TransformComponent>();
 	collider = &entity->getComponent<CircleColliderComponent>();
 }
@@ -37,7 +40,7 @@ void TouchComponent::update() {
 		if (transform->position.x <= x && (transform->position.x + transform->width) >= x &&
 			transform->position.y <= y && (transform->position.y + transform->height) >= y) {
 			fling = true;
-			std::cout << "selected" << std::endl;
+			std::cout << "fliging" << std::endl;
 		}
 	}
 

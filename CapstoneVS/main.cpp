@@ -9,7 +9,7 @@
 using namespace std;
 
 Manager manager;
-auto& ball1(manager.addEntity());
+//auto& ball1(manager.addEntity());
 
 
 int main(void) {
@@ -21,26 +21,26 @@ int main(void) {
         //Sprite sprite = Sprite("Assets/Art/Biplane.png", 0, 0);
         //sprite.setScale(0.25f);
 
-		ball1.addComponent<TransformComponent>(100, 100);
-		ball1.addComponent<SpriteComponent>("Assets/Art/circle.png");
-		ball1.addComponent<CircleColliderComponent>("initial ball");
-		ball1.addComponent<TouchComponent>();
-		ball1.addComponent<KeyboardController>(); 
+		//ball1.addComponent<TransformComponent>(100, 100);
+		//ball1.addComponent<SpriteComponent>("Assets/Art/circle.png");
+		//ball1.addComponent<TouchComponent>();
+		//ball1.addComponent<CircleColliderComponent>("initial ball");
+		//ball1.addComponent<KeyboardController>(); 
 		//auto tex = newSprite.getComponent<SpriteComponent>().getTextureParams();
 
 		//todo: see why this gives a delay
 		//newSprite.getComponent<TransformComponent>().setScale(30/(float)tex.getWidth());
 
-		cout << (ball1.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
+		//cout << (ball1.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
 
 		for (int i = 0; i < 10; i++) {
 			auto& ball(manager.addEntity());
 			//TODO: setting width and height is buggy 
-			ball1.addComponent<TransformComponent>(50*i, 50*i);
-			ball1.addComponent<SpriteComponent>("Assets/Art/circle.png");
-			ball1.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
-			ball1.addComponent<TouchComponent>();
-			ball1.addComponent<KeyboardController>();
+			ball.addComponent<TransformComponent>(50*i, 50*i);
+			ball.addComponent<SpriteComponent>("Assets/Art/circle.png");
+			ball.addComponent<KeyboardController>();
+			ball.addComponent<TouchComponent>();
+			//ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		}
 
         bool running = true;
@@ -66,7 +66,7 @@ int main(void) {
 					{
 						CircleColliderComponent *targetCol = Game::colliders[j];
 						//TODO: find a better way to check if it's the same ball (maybe tag is not set)
-						if (srcCol->tag != targetCol->tag) {
+						//if (srcCol->tag != targetCol->tag) {
 							if (Collision::circle(*srcCol, *targetCol)) {
 								float dst = Collision::centerDistance(srcCol->center, targetCol->center);
 
@@ -79,7 +79,7 @@ int main(void) {
 
 								currentCollisions.push_back({ srcCol, targetCol });
 							}
-						}
+						//}
 					}
 				}
 
