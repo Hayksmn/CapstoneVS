@@ -26,16 +26,67 @@ void TransformComponent::init() {
 }
 
 void TransformComponent::update() {
+
+	if (selected) {
+
+		auto mx = (float)Mouse::getMouseX();
+		auto my = (float)Mouse::getMouseY();
+
+		velocity.x = mx - (position.x + (width) / 2);
+		velocity.y = my - (position.y + (height) / 2);
+		
+	}
+
+	if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+		double x, y;
+		x = Mouse::getMouseX();
+		y = Mouse::getMouseY();
+		if (position.x <= x && (position.x + width) >= x &&
+			position.y <= y && (position.y + height) >= y)
+		{
+			selected = true;
+			std::cout << "selected" << std::endl;
+		}
+	}
+
+	if (Mouse::buttonUp(GLFW_MOUSE_BUTTON_LEFT)) {
+		selected = false;
+	}
+
+	if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_RIGHT)) {
+		double x, y;
+		x = Mouse::getMouseX();
+		y = Mouse::getMouseY();
+		if (position.x <= x && (position.x + width) >= x &&
+			position.y <= y && (position.y + height) >= y) {
+			fling = true;
+			std::cout << "fliging start" << std::endl;
+		}
+	}
+
+
+	if (Mouse::buttonUp(GLFW_MOUSE_BUTTON_RIGHT)) {
+		if (fling) {
+			float dst = Utils::distance(vec2<float>((position.x + (width) / 2), (position.y + (height) / 2)), vec2<float>(Mouse::getMouseX(), Mouse::getMouseY()));
+			velocity.x = ((position.x + (width) / 2) - Mouse::getMouseX()) / 10;
+			velocity.y = ((position.y + (height) / 2) - Mouse::getMouseY()) / 10;
+			speedTo(0.05f * dst);
+
+			std::cout << "fliging!" << std::endl;
+		}
+		fling = false;
+	}
+
+
 	position.x += velocity.x;
 	position.y += velocity.y;
-	velocity *= 0.99f;
+	velocity *= friction;
 	if (fabs(velocity.x*velocity.x + velocity.y*velocity.y) < 0.001f)
 	{
 		velocity.x = 0;
 		velocity.y = 0;
-
-		
 	}
+
 }
 
 void TransformComponent::speedTo(float x) {
@@ -97,4 +148,10 @@ void TransformComponent::setWidth(float w) {
 
 void TransformComponent::setHeight(float h) {
 	height = h;
+}
+
+void TransformComponent::draw() {
+	if (fling) {
+		Utils::drawLine(vec2f((position.x + (width)/2), (position.y + (height) / 2)), vec2<float>((float)Mouse::getMouseX(), (float)Mouse::getMouseY()));
+	}
 }

@@ -122,12 +122,12 @@ public:
 			std::end(entities));
 	}
 
-	Entity& getEntities() {
-		Entity* e = new Entity();
-		std::unique_ptr<Entity> uPtr{ e };
-		entities.emplace_back(std::move(uPtr));
-		return *e;
+	
+	std::vector<std::unique_ptr<Entity>>& getEntities()
+	{
+		return entities;
 	}
+
 
 	Entity& addEntity() {
 		Entity* e = new Entity();

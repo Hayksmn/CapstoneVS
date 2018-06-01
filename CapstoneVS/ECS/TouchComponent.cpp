@@ -16,6 +16,8 @@ void TouchComponent::init() {
 void TouchComponent::update() {
 	if (selected) {
 		transform->moveTo((float)Mouse::getMouseX() - transform->width / 2, (float)Mouse::getMouseY() - transform->height / 2);
+		transform->velocity.x = ((float)Mouse::getMouseX() - collider->center.x);
+		transform->velocity.y = ((float)Mouse::getMouseY() - collider->center.y);
 	}
 
 	if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_LEFT)) {
@@ -23,7 +25,8 @@ void TouchComponent::update() {
 		x = Mouse::getMouseX();
 		y = Mouse::getMouseY();
 		if (transform->position.x <= x && (transform->position.x + transform->width) >= x &&
-			transform->position.y <= y && (transform->position.y + transform->height) >= y) {
+			transform->position.y <= y && (transform->position.y + transform->height) >= y) 
+		{
 			selected = true;
 			std::cout << "selected" << std::endl;
 		}

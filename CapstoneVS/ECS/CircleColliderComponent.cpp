@@ -18,6 +18,7 @@ CircleColliderComponent::CircleColliderComponent(std::string t, float r) {
 }
 
 void CircleColliderComponent::init() {
+
 	if (!entity->hasComponent<TransformComponent>()) {
 		&entity->addComponent<TransformComponent>();
 	}

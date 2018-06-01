@@ -17,10 +17,18 @@ public:
 	float width = 64;
 	float height = 64;
 
+	float radius = 32;
+
+	bool selected = false;
+	bool fling = false;
+
+
 	float speed = 5;
 	float rot = 0;
 	float xScale = 1;
 	float yScale = 1;
+	//from 0 to 1 
+	float friction = 0.99f;
 
 	TransformComponent();
 
@@ -29,6 +37,8 @@ public:
 	TransformComponent(float x, float y, float w, float h);
 
 	void init() override;
+
+	void draw() override;
 
 	void update() override;
 
