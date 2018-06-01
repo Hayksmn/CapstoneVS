@@ -2,8 +2,9 @@
 #include "Components.h"
 
 SpriteComponent::SpriteComponent() = default;
-SpriteComponent::SpriteComponent(string imagePath) {
+SpriteComponent::SpriteComponent(string imagePath, string t) {
 	texture = new Texture(imagePath);
+	tag = t;
 };
 
 Texture SpriteComponent::getTextureParams()

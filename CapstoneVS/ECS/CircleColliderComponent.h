@@ -9,16 +9,19 @@
 class CircleColliderComponent : public Component {
 
 public:
+	CircleColliderComponent();
+	CircleColliderComponent(std::string t);
+
+	CircleColliderComponent(std::string t, float r);
 
 	TransformComponent * transform;
 
 	vec2<float> center;
 	float rad;
-	int mass = 30;
+	float mass = 10.0f;
 	std::string tag = "";
 
-	CircleColliderComponent();
-	CircleColliderComponent(std::string t);
+	
 
 	void init() override;
 	void update() override;

@@ -26,13 +26,15 @@ void TransformComponent::init() {
 }
 
 void TransformComponent::update() {
-	position.x += velocity.x*speed;
-	position.y += velocity.y*speed;
+	position.x += velocity.x;
+	position.y += velocity.y;
 	velocity *= 0.99f;
-	if (fabs(velocity.x*velocity.x + velocity.y*velocity.y) < 0.01f)
+	if (fabs(velocity.x*velocity.x + velocity.y*velocity.y) < 0.001f)
 	{
 		velocity.x = 0;
 		velocity.y = 0;
+
+		
 	}
 }
 

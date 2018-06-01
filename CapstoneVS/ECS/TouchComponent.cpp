@@ -40,16 +40,19 @@ void TouchComponent::update() {
 		if (transform->position.x <= x && (transform->position.x + transform->width) >= x &&
 			transform->position.y <= y && (transform->position.y + transform->height) >= y) {
 			fling = true;
-			std::cout << "fliging" << std::endl;
+			std::cout << "fliging start" << std::endl;
 		}
 	}
+	
 
 	if (Mouse::buttonUp(GLFW_MOUSE_BUTTON_RIGHT)) {
 		if (fling) {
 			float dst = Utils::distance(collider->center, vec2<float>(Mouse::getMouseX(), Mouse::getMouseY()));
-			transform->velocity.x = (collider->center.x - Mouse::getMouseX()) / dst;
-			transform->velocity.y = (collider->center.y - Mouse::getMouseY()) / dst;
+			transform->velocity.x = (collider->center.x - Mouse::getMouseX())/10;
+			transform->velocity.y = (collider->center.y - Mouse::getMouseY())/10;
 			transform->speedTo(0.05f * dst);
+
+			std::cout << "fliging!" << std::endl;
 		}
 		fling = false;
 	}

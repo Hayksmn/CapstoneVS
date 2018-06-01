@@ -83,7 +83,7 @@ void Engine::update() {
 /// Starts rendering everything in back buffer.
 /// </summary>
 void Engine::beginRender() {
-        glClearColor(0, 0, 1, 1); //cleared back buffer and set to blue
+        glClearColor(0, 0, 0, 0); //cleared back buffer and set to blue
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //cleared the depth buffer
 }
 

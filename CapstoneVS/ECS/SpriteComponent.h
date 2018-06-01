@@ -17,9 +17,11 @@ private:
 public:
 
 	SpriteComponent();
-	SpriteComponent(string imagePath);
+	SpriteComponent(string imagePath, string t);
 
 	Texture getTextureParams();
+
+	std::string tag;
 
 	void init() override;
 
