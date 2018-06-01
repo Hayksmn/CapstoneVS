@@ -14,6 +14,7 @@ public:
 
 	vec2<float> center;
 	float rad;
+	int mass = 30;
 	std::string tag = "";
 
 	CircleColliderComponent();

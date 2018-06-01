@@ -28,6 +28,12 @@ void TransformComponent::init() {
 void TransformComponent::update() {
 	position.x += velocity.x*speed;
 	position.y += velocity.y*speed;
+	velocity *= 0.99f;
+	if (fabs(velocity.x*velocity.x + velocity.y*velocity.y) < 0.01f)
+	{
+		velocity.x = 0;
+		velocity.y = 0;
+	}
 }
 
 void TransformComponent::speedTo(float x) {

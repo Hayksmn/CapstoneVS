@@ -90,6 +90,50 @@ int main(void) {
 
 				for (auto c : currentCollisions) {
 					Utils::drawLine(c.first->center, c.second->center);
+
+					CircleColliderComponent *b1 = c.first;
+					CircleColliderComponent *b2 = c.second;
+
+					// Distance between balls
+					float fDistance = Utils::distance(b1->center, b2->center);
+
+					// Normal
+					float nx = (b2->transform->position.x - b1->transform->position.x) / fDistance;
+					float ny = (b2->transform->position.y - b1->transform->position.y) / fDistance;
+					vec2<float> normal(nx, ny);
+
+					// Tangent
+					vec2<float> tangent(-ny, nx);
+
+					// Dot Product Tangent
+					
+					float dpTan1 = tangent.dot(b1->transform->velocity, tangent);
+					float dpTan2 = tangent.dot(b2->transform->velocity, tangent);
+
+					// Dot Product Normal
+					float dpNorm1 = tangent.dot(b1->transform->velocity, normal);
+					float dpNorm2 = tangent.dot(b2->transform->velocity, normal);
+
+					// Conservation of momentum in 1D
+					float m1 = (dpNorm1 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpNorm2) / (b1->mass + b2->mass);
+					float m2 = (dpNorm2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpNorm1) / (b1->mass + b2->mass);
+
+					// Update ball velocities
+					vec2<float> dv11 = tangent * dpTan1;
+					vec2<float> dv12 = normal * m1;
+					b1->transform->velocity = dv11 + dv12;
+					vec2<float> dv21 = tangent * dpTan2;
+					vec2<float> dv22 = normal * m2;
+					b2->transform->velocity = dv21 + dv22;
+
+					// Wikipedia Version - Maths is smarter but same
+					//float kx = (b1->vx - b2->vx);
+					//float ky = (b1->vy - b2->vy);
+					//float p = 2.0 * (nx * kx + ny * ky) / (b1->mass + b2->mass);
+					//b1->vx = b1->vx - p * b2->mass * nx;
+					//b1->vy = b1->vy - p * b2->mass * ny;
+					//b2->vx = b2->vx + p * b1->mass * nx;
+					//b2->vy = b2->vy + p * b1->mass * ny;
 				}
 
                 engine.endRender();
