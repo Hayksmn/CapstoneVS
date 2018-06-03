@@ -27,6 +27,8 @@ void TransformComponent::init() {
 
 void TransformComponent::update() {
 
+
+
 	if (selected) {
 
 		auto mx = (float)Mouse::getMouseX();
@@ -35,6 +37,34 @@ void TransformComponent::update() {
 		velocity.x = mx - (position.x + (width) / 2);
 		velocity.y = my - (position.y + (height) / 2);
 		
+	}
+
+	if (drag) {
+
+		auto mx = (float)Mouse::getMouseX();
+		auto my = (float)Mouse::getMouseY();
+
+		moveTo(mx - (width) / 2, my - (height) / 2);
+		//velocity.x = mx - (position.x );
+		//velocity.y = my - (position.y );
+
+	}
+
+	if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_MIDDLE)) {
+		double x, y;
+		x = Mouse::getMouseX();
+		y = Mouse::getMouseY();
+		if (position.x <= x && (position.x + width) >= x &&
+			position.y <= y && (position.y + height) >= y)
+		{
+			drag = true;
+			std::cout << "selected" << std::endl;
+		}
+	}
+
+	if (Mouse::buttonUp(GLFW_MOUSE_BUTTON_MIDDLE)) {
+		drag = false;
+
 	}
 
 	if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_LEFT)) {
@@ -48,6 +78,7 @@ void TransformComponent::update() {
 			std::cout << "selected" << std::endl;
 		}
 	}
+
 
 	if (Mouse::buttonUp(GLFW_MOUSE_BUTTON_LEFT)) {
 		selected = false;

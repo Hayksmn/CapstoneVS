@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CapstoneVS", "CapstoneVS\CapstoneVS.vcxproj", "{E987BB5A-82DE-477F-950E-8AAC501FF0F4}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupVS", "..\SetupVS\SetupVS\SetupVS.vdproj", "{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{E987BB5A-82DE-477F-950E-8AAC501FF0F4}.Release|x64.Build.0 = Release|x64
 		{E987BB5A-82DE-477F-950E-8AAC501FF0F4}.Release|x86.ActiveCfg = Release|Win32
 		{E987BB5A-82DE-477F-950E-8AAC501FF0F4}.Release|x86.Build.0 = Release|Win32
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Debug|x64.ActiveCfg = Debug
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Debug|x64.Build.0 = Debug
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Debug|x86.ActiveCfg = Debug
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Debug|x86.Build.0 = Debug
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Release|x64.ActiveCfg = Release
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Release|x64.Build.0 = Release
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Release|x86.ActiveCfg = Release
+		{F2F00ACF-CCB8-42FA-912A-293D8E3D852F}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

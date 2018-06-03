@@ -21,6 +21,7 @@ public:
 
 	bool selected = false;
 	bool fling = false;
+	bool drag = false;
 
 
 	float speed = 5;
