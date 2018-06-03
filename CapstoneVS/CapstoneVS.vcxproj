@@ -153,6 +153,7 @@
     <ClCompile Include="ECS\CircleColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\KeyboardController.cpp" />
+    <ClCompile Include="ECS\LineComponent.cpp" />
     <ClCompile Include="ECS\SpriteComponent.cpp" />
     <ClCompile Include="ECS\TouchComponent.cpp" />
     <ClCompile Include="ECS\TransformComponent.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="ECS\Components.h" />
     <ClInclude Include="ECS\ECS.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
+    <ClInclude Include="ECS\LineComponent.h" />
     <ClInclude Include="ECS\TouchComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="ECS\vec2.h" />

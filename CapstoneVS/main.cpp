@@ -1,5 +1,6 @@
 #include "Engine\Engine.h"
 #include <iostream>
+#include <cmath>
 
 #include "ECS/Components.h"
 #include "ECS/Collision.h"
@@ -24,10 +25,9 @@ int main(void) {
 	//sprite.setScale(0.25f);
 
 	//ball1.addComponent<TransformComponent>(100, 100);
-	//ball1.addComponent<SpriteComponent>("Assets/Art/circle.png");
-	//ball1.addComponent<TouchComponent>();
-	//ball1.addComponent<CircleColliderComponent>("initial ball");
 	//ball1.addComponent<KeyboardController>(); 
+	//ball1.addComponent<CircleColliderComponent>("initial ball");
+	//ball1.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball1");
 	//auto tex = newSprite.getComponent<SpriteComponent>().getTextureParams();
 
 	//todo: see why this gives a delay
@@ -35,12 +35,18 @@ int main(void) {
 
 	//cout << (ball1.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
 
-	for (int i = 0; i < 10; i++) {
+	auto& line(manager.addEntity());
+	line.addComponent<LineComponent>();
+	line.addComponent<LineComponent>(vec2<float>(500, 50), vec2<float>(700, 50), 15);
+	line.addComponent<LineComponent>(vec2<float>(300, 30), vec2<float>(600, 30), 15);
+	line.addComponent<LineComponent>(vec2<float>(300, 100), vec2<float>(600, 100), 15);
+
+	for (int i = 0; i < 50; i++) {
 		auto& ball(manager.addEntity());
 		//TODO: setting width and height is buggy 
-		ball.addComponent<TransformComponent>(50 * i, 50 * i);
+		ball.addComponent<TransformComponent>(50 * i, 50 * i, 20, 20);
 		ball.addComponent<KeyboardController>();
-		ball.addComponent<CircleColliderComponent>();
+		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
 		//ball.addComponent<TouchComponent>();
 	}
@@ -53,6 +59,7 @@ int main(void) {
 		manager.update();
 
 		vector<pair<CircleColliderComponent*, CircleColliderComponent*>> currentCollisions;
+		vector<CircleColliderComponent*> fakeBalls;
 
 		for (int i = 0; i <= Game::colliders.size() - 1; i++)
 		{
@@ -64,6 +71,63 @@ int main(void) {
 			if (srcCol->center.y < 0) srcCol->transform->position.y += Engine::SCREEN_HEIGHT;
 			if (srcCol->center.y >= Engine::SCREEN_HEIGHT) srcCol->transform->position.y -= Engine::SCREEN_HEIGHT;
 
+			for (auto &edge : Game::lines) {
+
+				// Check that line formed by velocity vector, intersects with line segment
+				vec2<float> line1 = edge->endPoint - edge->startPoint;
+
+				vec2<float> line2 = srcCol->center - edge->startPoint;
+
+				vec2f normalLine1 = vec2f(line1);
+				normalLine1.normalize();
+
+				float fEdgeLength = line1.length();
+
+				// This is nifty - It uses the DP of the line segment vs the line to the object, to work out
+				// how much of the segment is in the "shadow" of the object vector. The min and max clamp
+				// this to lie between 0 and the line segment length, which is then normalised. We can
+				// use this to calculate the closest point on the line segment
+				float dotp = vec2<float>::dot(line2, normalLine1);
+
+				float t = max(0.0f, min(fEdgeLength, vec2<float>::dot(line2, normalLine1))) / fEdgeLength;
+
+				// Which we do here
+				vec2<float> actualLine = line1 * t;
+				vec2<float> closestPoint = edge->startPoint + actualLine;
+
+				// And once we know the closest point, we can check if the ball has collided with the segment in the
+				// same way we check if two balls have collided
+				float fDistance = Utils::distance(srcCol->center, closestPoint);
+
+				if (fDistance <= (srcCol->rad + edge->radius))
+				{
+					cout << "t = " << t << std::endl;
+					// Collision has occurred - treat collision point as a ball that cannot move. To make this
+					// compatible with the dynamic resolution code below, we add a fake ball with an infinite mass
+					// so it behaves like a solid object when the momentum calculations are performed
+					//auto& fake(manager.addEntity());
+					//fake.addComponent<CircleColliderComponent>("fake");
+					CircleColliderComponent *fakeball = new CircleColliderComponent("fake");// &fake.getComponent<CircleColliderComponent>();
+					fakeball->transform = new TransformComponent(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2*edge->radius, 2 * edge->radius);
+					fakeball->rad = edge->radius;
+					fakeball->mass = srcCol->mass * 0.8f;
+					fakeball->center = closestPoint;
+					fakeball->transform->velocity = srcCol->transform->velocity * (-1);	// We will use these later to allow the lines to impart energy into ball
+																						// if the lines are moving, i.e. like pinball flippers
+
+					// Store Fake Ball
+					fakeBalls.push_back(fakeball);
+
+					// Add collision to vector of collisions for dynamic resolution
+					currentCollisions.push_back({ srcCol, fakeball });
+
+					// Calculate displacement required
+					float fOverlap = -(fDistance - srcCol->rad - fakeball->rad);
+
+					// Displace Current Ball away from collision
+					srcCol->transform->moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
+				}
+			}
 
 			for (int j = i + 1; j < Game::colliders.size(); j++)
 			{
@@ -140,9 +204,6 @@ int main(void) {
 
 		//newSprite.getComponent<TransformComponent>().moveTo((float)Mouse::getMouseX(), (float)Mouse::getMouseY());
 
-		engine.beginRender();
-
-		manager.draw();
 		for (auto& c : currentCollisions) {
 			Utils::drawLine(c.first->center, c.second->center);
 
@@ -190,6 +251,13 @@ int main(void) {
 			//b2->vx = b2->vx + p * b1->mass * nx;
 			//b2->vy = b2->vy + p * b1->mass * ny;
 		}
+
+		for (auto& f : fakeBalls) delete f;
+		fakeBalls.clear();
+
+		engine.beginRender();
+
+		manager.draw();
 
 		engine.endRender();
 

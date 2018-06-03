@@ -5,3 +5,4 @@
 #include "CircleColliderComponent.h"
 #include "TouchComponent.h"
 #include "KeyboardController.h"
+#include "LineComponent.h"
