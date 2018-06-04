@@ -36,7 +36,7 @@ int main(void) {
 
 	//cout << (ball1.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 2; i++) {
 		auto& ball(manager.addEntity());
 		//TODO: setting width and height is buggy 
 		ball.addComponent<TransformComponent>(50 * i, 50 * i);
@@ -71,46 +71,48 @@ int main(void) {
 				CircleColliderComponent *targetCol = Game::colliders[j];
 				//TODO: find a better way to check if it's the same ball (maybe tag is not set)
 				//if (srcCol->tag != targetCol->tag) {
-				if (Collision::circle(*srcCol, *targetCol)) {
-
-
-					float overlap = 0;
-
-					float msx = 0;
-					float msy = 0;
-
-					float mtx = 0;
-					float mty = 0;
+				if (Collision::circleRel(*srcCol, *targetCol)) {
 
 					//cout <<"" << 
 
 					float dst = Collision::centerDistance(srcCol->center, targetCol->center);
 
-					overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
-
-
-					if (dst != 0.0f)
+					if (dst<=srcCol->rad+targetCol->rad)
 					{
-						msx = -overlap * (srcCol->center.x - targetCol->center.x) / dst;
-						msy = -overlap * (srcCol->center.y - targetCol->center.y) / dst;
-						mtx = overlap * (srcCol->center.x - targetCol->center.x) / dst;
-						mty = overlap * (srcCol->center.y - targetCol->center.y) / dst;
-					}
-					else
-					{
-						msx = -1;
-						msy = -1;
-						mtx = 1;
-						mty = 1;
-					}
+						float overlap = 0;
 
-					srcCol->transform->moveBy(msx, msy);
-					srcCol->center.x += msx;
-					srcCol->center.y += msy;
+						float msx = 0;
+						float msy = 0;
 
-					targetCol->transform->moveBy(mtx, mty);
-					targetCol->center.x += mtx;
-					targetCol->center.y += mty;
+						float mtx = 0;
+						float mty = 0;
+
+						overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
+
+
+						if (dst != 0.0f)
+						{
+							msx = -overlap * (srcCol->center.x - targetCol->center.x) / dst;
+							msy = -overlap * (srcCol->center.y - targetCol->center.y) / dst;
+							mtx = overlap * (srcCol->center.x - targetCol->center.x) / dst;
+							mty = overlap * (srcCol->center.y - targetCol->center.y) / dst;
+						}
+						else
+						{
+							msx = -1;
+							msy = -1;
+							mtx = 1;
+							mty = 1;
+						}
+
+						srcCol->transform->moveBy(msx, msy);
+						srcCol->center.x += msx;
+						srcCol->center.y += msy;
+
+						targetCol->transform->moveBy(mtx, mty);
+						targetCol->center.x += mtx;
+						targetCol->center.y += mty;
+					}
 
 
 					//srcCol->transform->velocity.x += -overlap * (srcCol->center.x - targetCol->center.x) / dst;
@@ -143,6 +145,22 @@ int main(void) {
 			}
 
 			cout << "reset";
+		}
+
+
+
+		if (Keyboard::keyDown(GLFW_KEY_B))
+		{
+			auto& ball(manager.getEntities());
+			for (auto& c : ball)
+			{
+				TransformComponent* b = &c->getComponent<TransformComponent>();
+				b->friction = 1.0f;
+			}
+
+			float fr = ball[0]->getComponent<TransformComponent>().friction;
+
+			cout << "Friction 1" << fr;
 		}
 
 		if (Keyboard::keyDown(GLFW_KEY_DOWN))

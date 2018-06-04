@@ -13,6 +13,8 @@ public:
 
 	static bool circle(const vec2<float>& center1, const float rad1, const vec2<float>& center2, const float rad2);
 
+	static bool circleRel(CircleColliderComponent& col1,  CircleColliderComponent& col2);
+
 	static float centerDistance(const vec2<float>& center1, const vec2<float>& center2);
 
 	static bool circle(const CircleColliderComponent& col1, const CircleColliderComponent& col2);

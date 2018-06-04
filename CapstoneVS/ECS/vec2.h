@@ -41,36 +41,36 @@ public:
 		return *this;
 	}
 
-	vec2 operator+(double s) {
+	vec2 operator+(T s) {
 		return vec2(x + s, y + s);
 	}
-	vec2 operator-(double s) {
+	vec2 operator-(T s) {
 		return vec2(x - s, y - s);
 	}
-	vec2 operator*(double s) {
+	vec2 operator*(T s) {
 		return vec2(x * s, y * s);
 	}
-	vec2 operator/(double s) {
+	vec2 operator/(T s) {
 		return vec2(x / s, y / s);
 	}
 
 
-	vec2& operator+=(double s) {
+	vec2& operator+=(T s) {
 		x += s;
 		y += s;
 		return *this;
 	}
-	vec2& operator-=(double s) {
+	vec2& operator-=(T s) {
 		x -= s;
 		y -= s;
 		return *this;
 	}
-	vec2& operator*=(double s) {
+	vec2& operator*=(T s) {
 		x *= s;
 		y *= s;
 		return *this;
 	}
-	vec2& operator/=(double s) {
+	vec2& operator/=(T s) {
 		x /= s;
 		y /= s;
 		return *this;
@@ -81,12 +81,12 @@ public:
 		this->y = y;
 	}
 
-	void rotate(double deg) {
-		double theta = deg / 180.0 * M_PI;
-		double c = cos(theta);
-		double s = sin(theta);
-		double tx = x * c - y * s;
-		double ty = x * s + y * c;
+	void rotate(T deg) {
+		T theta = deg / 180.0 * M_PI;
+		T c = cos(theta);
+		T s = sin(theta);
+		T tx = x * c - y * s;
+		T ty = x * s + y * c;
 		x = tx;
 		y = ty;
 	}
@@ -104,8 +104,8 @@ public:
 	float length() const {
 		return std::sqrt(x * x + y * y);
 	}
-	void truncate(double length) {
-		double angle = atan2f(y, x);
+	void truncate(T length) {
+		T angle = atan2f(y, x);
 		x = length * cos(angle);
 		y = length * sin(angle);
 	}
