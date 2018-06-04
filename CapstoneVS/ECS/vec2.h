@@ -32,6 +32,9 @@ public:
 		y += v.y;
 		return *this;
 	}
+
+
+
 	vec2& operator-=(vec2& v) {
 		x -= v.x;
 		y -= v.y;

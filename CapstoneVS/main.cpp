@@ -3,6 +3,7 @@
 
 #include "ECS/Components.h"
 #include "ECS/Collision.h"
+#include "ECS/vec2.h"
 
 #include "Utils.h"
 
@@ -73,16 +74,51 @@ int main(void) {
 				if (Collision::circle(*srcCol, *targetCol)) {
 
 
+					float overlap = 0;
+
+					float msx = 0;
+					float msy = 0;
+
+					float mtx = 0;
+					float mty = 0;
+
 					//cout <<"" << 
 
 					float dst = Collision::centerDistance(srcCol->center, targetCol->center);
 
-					float overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
+					overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
 
-					srcCol->transform->moveBy(-overlap * (srcCol->center.x - targetCol->center.x) / dst,
-						-overlap * (srcCol->center.y - targetCol->center.y) / dst);
-					targetCol->transform->moveBy(overlap * (srcCol->center.x - targetCol->center.x) / dst,
-						overlap * (srcCol->center.y - targetCol->center.y) / dst);
+
+					if (dst != 0.0f)
+					{
+						msx = -overlap * (srcCol->center.x - targetCol->center.x) / dst;
+						msy = -overlap * (srcCol->center.y - targetCol->center.y) / dst;
+						mtx = overlap * (srcCol->center.x - targetCol->center.x) / dst;
+						mty = overlap * (srcCol->center.y - targetCol->center.y) / dst;
+					}
+					else
+					{
+						msx = -1;
+						msy = -1;
+						mtx = 1;
+						mty = 1;
+					}
+
+					srcCol->transform->moveBy(msx, msy);
+					srcCol->center.x += msx;
+					srcCol->center.y += msy;
+
+					targetCol->transform->moveBy(mtx, mty);
+					targetCol->center.x += mtx;
+					targetCol->center.y += mty;
+
+
+					//srcCol->transform->velocity.x += -overlap * (srcCol->center.x - targetCol->center.x) / dst;
+
+					//srcCol->transform->velocity.y += -overlap * (srcCol->center.y - targetCol->center.y) / dst;
+
+					//targetCol->transform->velocity.x += overlap * (srcCol->center.x - targetCol->center.x) / dst;
+					//targetCol->transform->velocity.y += overlap * (srcCol->center.y - targetCol->center.y) / dst;
 
 					currentCollisions.push_back({ srcCol, targetCol });
 				}
@@ -118,9 +154,9 @@ int main(void) {
 				b->friction -= 0.04f;
 			}
 
-			float fr=ball[0]->getComponent<TransformComponent>().friction;
+			float fr = ball[0]->getComponent<TransformComponent>().friction;
 
-			cout << "Friction"<<fr;
+			cout << "Friction" << fr;
 		}
 		if (Keyboard::keyDown(GLFW_KEY_UP))
 		{
@@ -133,7 +169,7 @@ int main(void) {
 
 			float fr = ball[0]->getComponent<TransformComponent>().friction;
 
-			cout << "Friction "<< fr;
+			cout << "Friction " << fr;
 		}
 
 
