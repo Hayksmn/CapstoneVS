@@ -11,7 +11,7 @@ class TransformComponent;
 class SpriteComponent : public Component {
 
 private:
-	TransformComponent *transform;
+	//TransformComponent *transform;
 	Texture *texture;
 
 public:

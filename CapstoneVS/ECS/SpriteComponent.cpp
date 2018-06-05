@@ -13,10 +13,8 @@ Texture SpriteComponent::getTextureParams()
 }
 
 void SpriteComponent::init() {
-	if (!entity->hasComponent<TransformComponent>()) {
-		&entity->addComponent<TransformComponent>();
-	}
-	transform = &entity->getComponent<TransformComponent>();
+	
+	TransformComponent* transform = &entity->getComponent<TransformComponent>();
 
 	transform->setScale(transform->width / (float)texture->getWidth(), transform->height / (float)texture->getHeight());
 }
@@ -26,6 +24,9 @@ void SpriteComponent::update() {
 }
 
 void SpriteComponent::draw() {
+
+	TransformComponent* transform = &entity->getComponent<TransformComponent>();
+
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture->getId());
 	glLoadIdentity();

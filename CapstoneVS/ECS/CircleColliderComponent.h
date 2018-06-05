@@ -14,8 +14,6 @@ public:
 
 	CircleColliderComponent(std::string t, float r);
 
-	TransformComponent * transform;
-
 	vec2<float> center;
 	float rad;
 	float mass = 10.0f;
