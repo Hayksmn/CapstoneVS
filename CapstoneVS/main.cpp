@@ -44,10 +44,11 @@ int main(void) {
 	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
 		//TODO: setting width and height is buggy 
+		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<TransformComponent>(50 * i, 50 * i, 50, 50);
 		ball.addComponent<KeyboardController>();
-		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
+		ball.init();
 		//ball.addComponent<TouchComponent>();
 	}
 
@@ -65,11 +66,17 @@ int main(void) {
 		{
 			CircleColliderComponent *srcCol = Game::colliders[i];
 
+			TransformComponent* transform = &srcCol->entity->getComponent<TransformComponent>();
+
 			//temporary
-			if (srcCol->center.x < 0) srcCol->transform->position.x += Engine::SCREEN_WIDTH;
-			if (srcCol->center.x >= Engine::SCREEN_WIDTH) srcCol->transform->position.x -= Engine::SCREEN_WIDTH;
-			if (srcCol->center.y < 0) srcCol->transform->position.y += Engine::SCREEN_HEIGHT;
-			if (srcCol->center.y >= Engine::SCREEN_HEIGHT) srcCol->transform->position.y -= Engine::SCREEN_HEIGHT;
+			if (srcCol->center.x < 0) 
+				transform->position.x += Engine::SCREEN_WIDTH;
+			if (srcCol->center.x >= Engine::SCREEN_WIDTH)
+				transform->position.x -= Engine::SCREEN_WIDTH;
+			if (srcCol->center.y < 0)
+				transform->position.y += Engine::SCREEN_HEIGHT;
+			if (srcCol->center.y >= Engine::SCREEN_HEIGHT)
+				transform->position.y -= Engine::SCREEN_HEIGHT;
 
 			for (auto &edge : Game::lines) {
 
@@ -101,6 +108,9 @@ int main(void) {
 
 				if (fDistance <= (srcCol->rad + edge->radius))
 				{
+
+
+
 					cout << "t = " << t << std::endl;
 					// Collision has occurred - treat collision point as a ball that cannot move. To make this
 					// compatible with the dynamic resolution code below, we add a fake ball with an infinite mass
@@ -108,11 +118,12 @@ int main(void) {
 					//auto& fake(manager.addEntity());
 					//fake.addComponent<CircleColliderComponent>("fake");
 					CircleColliderComponent *fakeball = new CircleColliderComponent("fake");// &fake.getComponent<CircleColliderComponent>();
-					fakeball->transform = new TransformComponent(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2*edge->radius, 2 * edge->radius);
+					fakeball->entity->addComponent<TransformComponent>(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2*edge->radius, 2 * edge->radius);
 					fakeball->rad = edge->radius;
 					fakeball->mass = srcCol->mass * 0.8f;
 					fakeball->center = closestPoint;
-					fakeball->transform->velocity = srcCol->transform->velocity * (-1);	// We will use these later to allow the lines to impart energy into ball
+					
+					fakeball->entity->getComponent<TransformComponent>().velocity = srcCol->entity->getComponent<TransformComponent>().velocity * (-1);	// We will use these later to allow the lines to impart energy into ball
 																						// if the lines are moving, i.e. like pinball flippers
 
 					// Store Fake Ball
@@ -125,7 +136,7 @@ int main(void) {
 					float fOverlap = -(fDistance - srcCol->rad - fakeball->rad);
 
 					// Displace Current Ball away from collision
-					srcCol->transform->moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
+					srcCol->entity->getComponent<TransformComponent>().moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
 				}
 			}
 
@@ -143,9 +154,9 @@ int main(void) {
 
 					float overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
 
-					srcCol->transform->moveBy(-overlap * (srcCol->center.x - targetCol->center.x) / dst,
+					srcCol->entity->getComponent<TransformComponent>().moveBy(-overlap * (srcCol->center.x - targetCol->center.x) / dst,
 						-overlap * (srcCol->center.y - targetCol->center.y) / dst);
-					targetCol->transform->moveBy(overlap * (srcCol->center.x - targetCol->center.x) / dst,
+					targetCol->entity->getComponent<TransformComponent>().moveBy(overlap * (srcCol->center.x - targetCol->center.x) / dst,
 						overlap * (srcCol->center.y - targetCol->center.y) / dst);
 
 					currentCollisions.push_back({ srcCol, targetCol });
@@ -223,12 +234,12 @@ int main(void) {
 
 			// Dot Product Tangent
 
-			float dpTan1 = vec2<float>::dot(b1->transform->velocity, tangent);
-			float dpTan2 = vec2<float>::dot(b2->transform->velocity, tangent);
+			float dpTan1 = vec2<float>::dot(b1->entity->getComponent<TransformComponent>().velocity, tangent);
+			float dpTan2 = vec2<float>::dot(b2->entity->getComponent<TransformComponent>().velocity, tangent);
 
 			// Dot Product Normal
-			float dpNorm1 = vec2<float>::dot(b1->transform->velocity, normal);
-			float dpNorm2 = vec2<float>::dot(b2->transform->velocity, normal);
+			float dpNorm1 = vec2<float>::dot(b1->entity->getComponent<TransformComponent>().velocity, normal);
+			float dpNorm2 = vec2<float>::dot(b2->entity->getComponent<TransformComponent>().velocity, normal);
 
 			// Conservation of momentum in 1D
 			float m1 = (dpNorm1 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpNorm2) / (b1->mass + b2->mass);
@@ -237,10 +248,10 @@ int main(void) {
 			// Update ball velocities
 			vec2<float> dv11 = tangent * dpTan1;
 			vec2<float> dv12 = normal * m1;
-			b1->transform->velocity = dv11 + dv12;
+			b1->entity->getComponent<TransformComponent>().velocity = dv11 + dv12;
 			vec2<float> dv21 = tangent * dpTan2;
 			vec2<float> dv22 = normal * m2;
-			b2->transform->velocity = dv21 + dv22;
+			b2->entity->getComponent<TransformComponent>().velocity = dv21 + dv22;
 
 			// Wikipedia Version - Maths is smarter but same
 			//float kx = (b1->vx - b2->vx);

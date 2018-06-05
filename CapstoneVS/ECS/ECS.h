@@ -60,6 +60,15 @@ public:
 			c->draw();
 		}
 	};
+
+	void init() {
+		for (auto& c : components) {
+			c->init();
+		}
+	};
+	
+
+
 	bool isActive() {
 		return active;
 	}
@@ -83,7 +92,6 @@ public:
 		componentArray[getComponentTypeID<T>()] = c;
 		componentBitSet[getComponentTypeID<T>()] = true;
 
-		c->init();
 		return *c;
 	}
 

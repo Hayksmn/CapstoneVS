@@ -16,7 +16,7 @@ LineComponent::LineComponent(vec2<float> start, vec2<float> end, float rad) {
 }
 
 void LineComponent::init() {
-	texture = new Texture("Assets/Art/circle.png");
+	
 
 	Game::lines.push_back(this);
 }
@@ -49,6 +49,9 @@ void LineComponent::update() {
 }
 
 void LineComponent::draw() {
+
+	Texture* texture = new Texture("Assets/Art/circle.png");
+
 	Utils::drawCircle(texture, startPoint, radius);
 	Utils::drawCircle(texture, endPoint, radius);
 

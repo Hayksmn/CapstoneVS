@@ -12,7 +12,7 @@ class KeyboardController : public Component {
 private:
 
 public:
-	TransformComponent * transform;
+	
 
 	KeyboardController();
 

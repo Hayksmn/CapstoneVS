@@ -10,8 +10,7 @@
 class LineComponent : public Component {
 
 private:
-	Texture * texture;
-
+	
 	bool startSelected = false;
 	bool endSelected = false;
 

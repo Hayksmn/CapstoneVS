@@ -3,13 +3,15 @@
 KeyboardController::KeyboardController() = default;
 
 void KeyboardController::init() {
-	if (!entity->hasComponent<TransformComponent>()) {
-		&entity->addComponent<TransformComponent>();
-	}
-	transform = &entity->getComponent<TransformComponent>();
+	
 }
 
 void KeyboardController::update() {
+
+	TransformComponent* transform = &entity->getComponent<TransformComponent>();
+
+
+
 	if (Keyboard::keyDown(GLFW_KEY_W)) {
 		transform->velocity.y = 1;
 	}
