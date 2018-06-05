@@ -79,7 +79,7 @@ void TransformComponent::update() {
 
 
 	position.x += velocity.x;
-	position.y += velocity.y -= 0.2f;
+	position.y += velocity.y;// -= 0.2f;
 	velocity *= friction;
 	if (fabs(velocity.x*velocity.x + velocity.y*velocity.y) < 0.001f)
 	{

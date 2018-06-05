@@ -41,10 +41,10 @@ int main(void) {
 	line.addComponent<LineComponent>(vec2<float>(300, 30), vec2<float>(600, 30), 15);
 	line.addComponent<LineComponent>(vec2<float>(300, 100), vec2<float>(600, 100), 15);
 
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
 		//TODO: setting width and height is buggy 
-		ball.addComponent<TransformComponent>(50 * i, 50 * i, 20, 20);
+		ball.addComponent<TransformComponent>(50 * i, 50 * i, 50, 50);
 		ball.addComponent<KeyboardController>();
 		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
