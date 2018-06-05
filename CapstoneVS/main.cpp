@@ -45,6 +45,11 @@ int main(void) {
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
 		//ball.addComponent<TouchComponent>();
 	}
+	
+
+	
+	manager.init();
+
 
 	bool running = true;
 	while (!glfwWindowShouldClose(Engine::window)) {
@@ -142,8 +147,26 @@ int main(void) {
 				i++;
 			}
 
-			cout << "reset";
+			cout << "reset" << endl;
 		}
+
+		if (Keyboard::keyDown(GLFW_KEY_B))
+		{
+			int i = 0;
+
+			auto& ball(manager.getEntities());
+
+			for (auto& c : ball)
+			{
+				TransformComponent* b = &c->getComponent<TransformComponent>();
+				b->friction = 1.0f;
+
+				i++;
+			}
+
+			cout << "No friction" << endl;
+		}
+
 
 		if (Keyboard::keyDown(GLFW_KEY_DOWN))
 		{
@@ -156,7 +179,7 @@ int main(void) {
 
 			float fr = ball[0]->getComponent<TransformComponent>().friction;
 
-			cout << "Friction" << fr;
+			cout << "Friction" << fr << endl;
 		}
 		if (Keyboard::keyDown(GLFW_KEY_UP))
 		{
@@ -169,7 +192,7 @@ int main(void) {
 
 			float fr = ball[0]->getComponent<TransformComponent>().friction;
 
-			cout << "Friction " << fr;
+			cout << "Friction " << fr << endl;
 		}
 
 

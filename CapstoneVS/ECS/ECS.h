@@ -41,14 +41,14 @@ public:
 
 class Entity {
 	
-private:
+public:
 	bool active = false;
-	std::vector<std::unique_ptr<Component>> components;
+	std::vector<Component*> components;
 
 	ComponentArray componentArray;
 	ComponentBitSet componentBitSet;
 
-public:
+
 	void update() {
 		for (auto& c : components) {
 			c->update();
@@ -77,7 +77,7 @@ public:
 	T& addComponent(TArgs... mArgs) {
 		T* c(new T(std::forward<TArgs>(mArgs)...));
 		c->entity = this;
-		std::unique_ptr<Component> uPtr{ c };
+		Component* uPtr{ c };
 		components.emplace_back(std::move(uPtr));
 
 		componentArray[getComponentTypeID<T>()] = c;
@@ -98,16 +98,49 @@ class Manager {
 private:
 	std::vector<std::unique_ptr<Entity>> entities;
 
+	std::vector<std::vector<Component*>> componentArray;
+
+
 public:
-	void update() {
+
+
+	void init() {
+
+		
+			
+			for (auto& c : entities[0]->components) {
+
+			std::vector<Component*> comp;
+				componentArray.push_back(comp);
+			}
+
+		
 		for (auto& e : entities) {
-			e->update();
+
+			int i = 0;
+
+			for (auto& c : e->components) {
+
+				componentArray[i].push_back(c);
+				i++;
+			}
+
+			//e->update();
+		}
+	}
+
+
+	void update() {
+		for (auto& a : componentArray) {
+			for (auto& c : a)
+			 c->update();
 		}
 	}
 
 	void draw() {
-		for (auto& e : entities) {
-			e->draw();
+		for (auto& a : componentArray) {
+			for (auto& c : a)
+				c->draw();
 		}
 	}
 
