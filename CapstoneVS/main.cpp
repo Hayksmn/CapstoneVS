@@ -36,12 +36,20 @@ int main(void) {
 
 	//cout << (ball1.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
 
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
 		//TODO: setting width and height is buggy 
 		ball.addComponent<TransformComponent>(50 * i, 50 * i);
 		ball.addComponent<KeyboardController>();
 		ball.addComponent<CircleColliderComponent>();
+		if (i == 0)
+			ball.getComponent<TransformComponent>().velocity.y = 10;
+		if (i == 0)
+			ball.getComponent<TransformComponent>().velocity.x = 10;
+		if (i == 1)
+			ball.getComponent<TransformComponent>().velocity.x = -3;
+		if (i == 1)
+			ball.getComponent<TransformComponent>().velocity.y = 10;
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
 		//ball.addComponent<TouchComponent>();
 	}
@@ -69,6 +77,12 @@ int main(void) {
 			for (int j = i + 1; j < Game::colliders.size(); j++)
 			{
 				CircleColliderComponent *targetCol = Game::colliders[j];
+
+				Utils::drawLine(targetCol->center, targetCol->center+targetCol->transform->velocity);
+				
+				
+				Utils::drawLine(vec2f(0,0), vec2f(100,100));
+
 				//TODO: find a better way to check if it's the same ball (maybe tag is not set)
 				//if (srcCol->tag != targetCol->tag) {
 				if (Collision::circleRel(*srcCol, *targetCol)) {
@@ -77,7 +91,7 @@ int main(void) {
 
 					float dst = Collision::centerDistance(srcCol->center, targetCol->center);
 
-					if (dst<=srcCol->rad+targetCol->rad)
+					if (dst <= srcCol->rad + targetCol->rad)
 					{
 						float overlap = 0;
 
@@ -139,6 +153,15 @@ int main(void) {
 				TransformComponent* b = &c->getComponent<TransformComponent>();
 				b->position = vec2f(50 * i, 50 * i);
 				b->velocity = vec2f(0, 0);
+				if (i == 0)
+					b->velocity.y = 10;
+				if (i == 0)								
+					b->velocity.x = 10;
+				if (i == 1)								
+					b->velocity.x = -3;
+				if (i == 1)								
+					b->velocity.y = 10;
+
 				b->friction = 0.99f;
 
 				i++;
@@ -198,10 +221,18 @@ int main(void) {
 
 		manager.draw();
 		for (auto& c : currentCollisions) {
+			
+			
+			
 			Utils::drawLine(c.first->center, c.second->center);
 
 			CircleColliderComponent *b1 = c.first;
 			CircleColliderComponent *b2 = c.second;
+
+			vec2f temp = (b1->transform->velocity*-1);
+
+			//relative velocity vector from ball 1 to ball 2
+			vec2f relveloc = b2->transform->velocity + temp;
 
 			// Distance between balls
 			float fDistance = Utils::distance(b1->center, b2->center);

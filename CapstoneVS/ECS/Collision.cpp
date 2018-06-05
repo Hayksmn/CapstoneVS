@@ -12,7 +12,7 @@ bool Collision::circle(const vec2<float>& center1, const float rad1, const vec2<
 bool Collision::circleRel(CircleColliderComponent& col1, CircleColliderComponent& col2) {
 
 	float dst = centerDistance(col1.center, col2.center);
-	float hypo = dst * col1.rad / col2.rad;
+	float hypo = (dst * col1.rad / col2.rad)/(1+col1.rad/col2.rad);
 	float dst2 = sqrt(hypo*hypo - col1.rad*col1.rad);
 
 	//vector from ball 1 to ball2
