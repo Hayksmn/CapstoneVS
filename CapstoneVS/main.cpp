@@ -153,7 +153,8 @@ int main(void) {
 					//cout <<"" << 
 
 					TransformComponent* t1=&srcCol->entity->getComponent<TransformComponent>();
-					TransformComponent* t2=&srcCol->entity->getComponent<TransformComponent>();
+					
+					TransformComponent* t2=&targetCol->entity->getComponent<TransformComponent>();
 
 
 
