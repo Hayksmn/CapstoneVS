@@ -44,7 +44,9 @@ void TransformComponent::update() {
 		auto mx = (float)Mouse::getMouseX();
 		auto my = (float)Mouse::getMouseY();
 
-		moveTo(mx - (width) / 2, my - (height) / 2);
+		moveTo(mx - (width) / 2, position.y);
+
+		
 		//velocity.x = mx - (position.x );
 		//velocity.y = my - (position.y );
 

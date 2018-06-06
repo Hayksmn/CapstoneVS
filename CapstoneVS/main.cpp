@@ -39,7 +39,7 @@ int main(void) {
 	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
 		//TODO: setting width and height is buggy 
-		ball.addComponent<TransformComponent>(50 * i, 50 * i);
+		ball.addComponent<TransformComponent>(64 * i, 150);
 		ball.addComponent<KeyboardController>();
 		ball.addComponent<CircleColliderComponent>();
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
@@ -60,8 +60,15 @@ int main(void) {
 
 		vector<pair<CircleColliderComponent*, CircleColliderComponent*>> currentCollisions;
 
-		for (int i = 0; i <= Game::colliders.size() - 1; i++)
+
+		int reset = 1;
+
+		for (int i = 0; i <= Game::colliders.size() - 1; ++i)
 		{
+			i = i * reset;
+
+			reset = 1;
+
 			CircleColliderComponent *srcCol = Game::colliders[i];
 
 			//temporary
@@ -69,7 +76,6 @@ int main(void) {
 			if (srcCol->center.x >= Engine::SCREEN_WIDTH) srcCol->transform->position.x -= Engine::SCREEN_WIDTH;
 			if (srcCol->center.y < 0) srcCol->transform->position.y += Engine::SCREEN_HEIGHT;
 			if (srcCol->center.y >= Engine::SCREEN_HEIGHT) srcCol->transform->position.y -= Engine::SCREEN_HEIGHT;
-
 
 			for (int j = i + 1; j < Game::colliders.size(); j++)
 			{
@@ -93,42 +99,53 @@ int main(void) {
 
 					overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
 
-
-					if (dst != 0.0f)
+					if (overlap < -0.2f)
 					{
-						msx = -overlap * (srcCol->center.x - targetCol->center.x) / dst;
-						msy = -overlap * (srcCol->center.y - targetCol->center.y) / dst;
-						mtx = overlap * (srcCol->center.x - targetCol->center.x) / dst;
-						mty = overlap * (srcCol->center.y - targetCol->center.y) / dst;
+						j = i + 1;
+						reset = 0;
+
+						if (dst != 0.0f)
+						{
+							msx = -overlap * (srcCol->center.x - targetCol->center.x) / dst;
+							msy = -overlap * (srcCol->center.y - targetCol->center.y) / dst;
+							mtx = overlap * (srcCol->center.x - targetCol->center.x) / dst;
+							mty = overlap * (srcCol->center.y - targetCol->center.y) / dst;
+						}
+						else
+						{
+							msx = -1;
+							msy = -1;
+							mtx = 1;
+							mty = 1;
+						}
+
+						srcCol->transform->moveBy(msx, msy);
+						srcCol->center.x += msx;
+						srcCol->center.y += msy;
+
+						targetCol->transform->moveBy(mtx, mty);
+						targetCol->center.x += mtx;
+						targetCol->center.y += mty;
+
+
+						//srcCol->transform->velocity.x += -overlap * (srcCol->center.x - targetCol->center.x) / dst;
+
+						//srcCol->transform->velocity.y += -overlap * (srcCol->center.y - targetCol->center.y) / dst;
+
+						//targetCol->transform->velocity.x += overlap * (srcCol->center.x - targetCol->center.x) / dst;
+						//targetCol->transform->velocity.y += overlap * (srcCol->center.y - targetCol->center.y) / dst;
+
+						currentCollisions.push_back({ srcCol, targetCol });
+
+
 					}
-					else
-					{
-						msx = -1;
-						msy = -1;
-						mtx = 1;
-						mty = 1;
-					}
-
-					srcCol->transform->moveBy(msx, msy);
-					srcCol->center.x += msx;
-					srcCol->center.y += msy;
-
-					targetCol->transform->moveBy(mtx, mty);
-					targetCol->center.x += mtx;
-					targetCol->center.y += mty;
-
-
-					//srcCol->transform->velocity.x += -overlap * (srcCol->center.x - targetCol->center.x) / dst;
-
-					//srcCol->transform->velocity.y += -overlap * (srcCol->center.y - targetCol->center.y) / dst;
-
-					//targetCol->transform->velocity.x += overlap * (srcCol->center.x - targetCol->center.x) / dst;
-					//targetCol->transform->velocity.y += overlap * (srcCol->center.y - targetCol->center.y) / dst;
-
-					currentCollisions.push_back({ srcCol, targetCol });
+					
 				}
-				//}
+				
+				
 			}
+
+			
 		}
 
 		if (Keyboard::keyDown(GLFW_KEY_R))
@@ -140,7 +157,7 @@ int main(void) {
 			for (auto& c : ball)
 			{
 				TransformComponent* b = &c->getComponent<TransformComponent>();
-				b->position = vec2f(50 * i, 50 * i);
+				b->position = vec2f(50 * i, 150);
 				b->velocity = vec2f(0, 0);
 				b->friction = 0.99f;
 
