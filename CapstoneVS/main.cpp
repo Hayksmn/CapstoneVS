@@ -41,6 +41,8 @@ int main(void) {
 	line.addComponent<LineComponent>(vec2<float>(300, 30), vec2<float>(600, 30), 15);
 	line.addComponent<LineComponent>(vec2<float>(300, 100), vec2<float>(600, 100), 15);
 
+	line.init();
+
 	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
 		//TODO: setting width and height is buggy 
@@ -150,13 +152,18 @@ int main(void) {
 
 					//cout <<"" << 
 
+					TransformComponent* t1=&srcCol->entity->getComponent<TransformComponent>();
+					TransformComponent* t2=&srcCol->entity->getComponent<TransformComponent>();
+
+
+
 					float dst = Collision::centerDistance(srcCol->center, targetCol->center);
 
 					float overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
 
-					srcCol->entity->getComponent<TransformComponent>().moveBy(-overlap * (srcCol->center.x - targetCol->center.x) / dst,
+					t1->moveBy(-overlap * (srcCol->center.x - targetCol->center.x) / dst,
 						-overlap * (srcCol->center.y - targetCol->center.y) / dst);
-					targetCol->entity->getComponent<TransformComponent>().moveBy(overlap * (srcCol->center.x - targetCol->center.x) / dst,
+					t2->moveBy(overlap * (srcCol->center.x - targetCol->center.x) / dst,
 						overlap * (srcCol->center.y - targetCol->center.y) / dst);
 
 					currentCollisions.push_back({ srcCol, targetCol });
@@ -221,6 +228,9 @@ int main(void) {
 			CircleColliderComponent *b1 = c.first;
 			CircleColliderComponent *b2 = c.second;
 
+			TransformComponent* t1 = &b1->entity->getComponent<TransformComponent>();
+			TransformComponent* t2 = &b2->entity->getComponent<TransformComponent>();
+
 			// Distance between balls
 			float fDistance = Utils::distance(b1->center, b2->center);
 
@@ -234,12 +244,12 @@ int main(void) {
 
 			// Dot Product Tangent
 
-			float dpTan1 = vec2<float>::dot(b1->entity->getComponent<TransformComponent>().velocity, tangent);
-			float dpTan2 = vec2<float>::dot(b2->entity->getComponent<TransformComponent>().velocity, tangent);
+			float dpTan1 = vec2<float>::dot(t1->velocity, tangent);
+			float dpTan2 = vec2<float>::dot(t2->velocity, tangent);
 
 			// Dot Product Normal
-			float dpNorm1 = vec2<float>::dot(b1->entity->getComponent<TransformComponent>().velocity, normal);
-			float dpNorm2 = vec2<float>::dot(b2->entity->getComponent<TransformComponent>().velocity, normal);
+			float dpNorm1 = vec2<float>::dot(t1->velocity, normal);
+			float dpNorm2 = vec2<float>::dot(t2->velocity, normal);
 
 			// Conservation of momentum in 1D
 			float m1 = (dpNorm1 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpNorm2) / (b1->mass + b2->mass);
@@ -248,10 +258,10 @@ int main(void) {
 			// Update ball velocities
 			vec2<float> dv11 = tangent * dpTan1;
 			vec2<float> dv12 = normal * m1;
-			b1->entity->getComponent<TransformComponent>().velocity = dv11 + dv12;
+			t1->velocity = dv11 + dv12;
 			vec2<float> dv21 = tangent * dpTan2;
 			vec2<float> dv22 = normal * m2;
-			b2->entity->getComponent<TransformComponent>().velocity = dv21 + dv22;
+			t2->velocity = dv21 + dv22;
 
 			// Wikipedia Version - Maths is smarter but same
 			//float kx = (b1->vx - b2->vx);
