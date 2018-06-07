@@ -13,7 +13,7 @@ Texture SpriteComponent::getTextureParams()
 }
 
 void SpriteComponent::init() {
-	
+	//fix dis no component call during initialization
 	TransformComponent* transform = &entity->getComponent<TransformComponent>();
 
 	transform->setScale(transform->width / (float)texture->getWidth(), transform->height / (float)texture->getHeight());
