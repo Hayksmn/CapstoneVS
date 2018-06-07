@@ -48,8 +48,8 @@ int main(void) {
 		//TODO: setting width and height is buggy
 
 
-		ball.addComponent<TransformComponent>(50 * i, 50 * i, 50, 50);
 		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
+		ball.addComponent<TransformComponent>(50 * i, 50 * i, 50, 50);
 		ball.addComponent<KeyboardController>();
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
 		ball.init();

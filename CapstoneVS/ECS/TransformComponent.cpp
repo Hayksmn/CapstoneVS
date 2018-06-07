@@ -82,6 +82,14 @@ void TransformComponent::update() {
 	position.y += velocity.y;
 	velocity *= friction;
 
+
+	CircleColliderComponent* ccc = &entity->getComponent<CircleColliderComponent>();
+
+	ccc->center.x = position.x + width / 2;
+	ccc->center.y = position.y + height / 2;
+	ccc->rad = width / 2;
+
+
 	if (fabs(velocity.x*velocity.x + velocity.y*velocity.y) < 0.001f)
 	{
 		velocity.x = 0;

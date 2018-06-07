@@ -29,10 +29,10 @@ void CircleColliderComponent::init() {
 
 void CircleColliderComponent::update() {
 
-	TransformComponent* transform = &entity->getComponent<TransformComponent>();
+	/*TransformComponent* transform = &entity->getComponent<TransformComponent>();
 
 
 	center.x = transform->position.x + transform->width / 2;
 	center.y = transform->position.y + transform->height / 2;
-	rad = transform->width / 2;
+	rad = transform->width / 2;*/
 }
