@@ -92,6 +92,8 @@ public:
 		componentArray[getComponentTypeID<T>()] = c;
 		componentBitSet[getComponentTypeID<T>()] = true;
 
+		//c->init();
+
 		return *c;
 	}
 
