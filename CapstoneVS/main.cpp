@@ -42,14 +42,6 @@ int main(void) {
 		ball.addComponent<TransformComponent>(50 * i, 50 * i);
 		ball.addComponent<KeyboardController>();
 		ball.addComponent<CircleColliderComponent>();
-		if (i == 0)
-			ball.getComponent<TransformComponent>().velocity.y = 10;
-		if (i == 0)
-			ball.getComponent<TransformComponent>().velocity.x = 10;
-		if (i == 1)
-			ball.getComponent<TransformComponent>().velocity.x = -3;
-		if (i == 1)
-			ball.getComponent<TransformComponent>().velocity.y = 10;
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
 		//ball.addComponent<TouchComponent>();
 	}
@@ -85,7 +77,7 @@ int main(void) {
 
 				//TODO: find a better way to check if it's the same ball (maybe tag is not set)
 				//if (srcCol->tag != targetCol->tag) {
-				if (Collision::circleRel(*srcCol, *targetCol)) {
+				if (Collision::circleRel(*srcCol, *targetCol)|| Collision::circle(*srcCol, *targetCol)) {
 
 					//cout <<"" << 
 
