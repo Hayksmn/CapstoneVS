@@ -275,25 +275,14 @@ int main(void) {
 			float m1 = (dpNorm1 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpNorm2) / (b1->mass + b2->mass);
 			float m2 = (dpNorm2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpNorm1) / (b1->mass + b2->mass);
 			
-			float m12 = (dpTan2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan1) / (b1->mass + b2->mass);
-			float m22 = (dpTan1 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpTan2) / (b1->mass + b2->mass);
-
 			// Update ball velocities
-			vec2<float> dv11 = tangent * m12;
+			vec2<float> dv11 = tangent * dpTan1;
 			vec2<float> dv12 = normal * m1;
 			t1->velocity = dv11 + dv12;
-			vec2<float> dv21 = tangent * m22;
+			vec2<float> dv21 = tangent * dpTan2;
 			vec2<float> dv22 = normal * m2;
 			t2->velocity = dv21 + dv22;
 
-			// Wikipedia Version - Maths is smarter but same
-			//float kx = (b1->vx - b2->vx);
-			//float ky = (b1->vy - b2->vy);
-			//float p = 2.0 * (nx * kx + ny * ky) / (b1->mass + b2->mass);
-			//b1->vx = b1->vx - p * b2->mass * nx;
-			//b1->vy = b1->vy - p * b2->mass * ny;
-			//b2->vx = b2->vx + p * b1->mass * nx;
-			//b2->vy = b2->vy + p * b1->mass * ny;
 		}
 
 		for (auto& f : fakeEntities) {
