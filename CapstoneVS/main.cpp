@@ -85,7 +85,7 @@ int main(void) {
 				// same way we check if two balls have collided
 				float fDistance = Utils::distance(srcCol->center, closestPoint);
 
-			
+
 
 				if (fDistance <= (srcCol->rad + edge->radius))
 				{
@@ -119,17 +119,14 @@ int main(void) {
 						cout << 0 << endl;
 
 						fDistance = 0.1;
-						fOverlap = srcCol->rad + fakeball->rad;
-
 					}
-					else
-					{
-						// Calculate displacement required
-						 fOverlap= -(fDistance - srcCol->rad - fakeball->rad);
 
-						// Displace Current Ball away from collision
-						srcCol->entity->getComponent<TransformComponent>().moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
-					}
+					// Calculate displacement required
+					fOverlap = -(fDistance - srcCol->rad - fakeball->rad);
+
+					// Displace Current Ball away from collision
+					srcCol->entity->getComponent<TransformComponent>().moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
+
 				}
 
 			}
@@ -247,12 +244,12 @@ int main(void) {
 				fDistance = 0.1;
 				// Normal
 
-			
+
 
 
 				nx = (((float(rand()) / float(RAND_MAX)) * (0.2f)) - 0.1f) / fDistance;
 				ny = (((float(rand()) / float(RAND_MAX)) * (0.2f)) - 0.1f) / fDistance;
-				normal =  vec2<float>(nx, ny);
+				normal = vec2<float>(nx, ny);
 
 				t1->velocity = normal;
 				t2->velocity = normal * -1;
@@ -263,7 +260,7 @@ int main(void) {
 				// Normal
 				nx = (b2->center.x - b1->center.x) / fDistance;
 				ny = (b2->center.y - b1->center.y) / fDistance;
-				normal= vec2<float>(nx, ny);
+				normal = vec2<float>(nx, ny);
 			}
 			// Tangent
 			vec2<float> tangent(-ny, nx);
