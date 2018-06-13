@@ -144,6 +144,14 @@ int main(void) {
 
 					float dst = Collision::centerDistance(srcCol->center, targetCol->center);
 
+					if (dst == 0)
+					{
+						cout << 0 << endl;
+
+						dst = 0.1;
+
+					}
+
 					float overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
 
 					float xDst = srcCol->center.x - targetCol->center.x;
