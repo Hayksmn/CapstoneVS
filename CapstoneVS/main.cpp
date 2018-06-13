@@ -85,13 +85,7 @@ int main(void) {
 				// same way we check if two balls have collided
 				float fDistance = Utils::distance(srcCol->center, closestPoint);
 
-				if (fDistance == 0)
-				{
-					cout << 0 << endl;
-
-					fDistance = 0.1;
-
-				}
+			
 
 				if (fDistance <= (srcCol->rad + edge->radius))
 				{
@@ -118,12 +112,26 @@ int main(void) {
 					// Add collision to vector of collisions for dynamic resolution
 					currentCollisions.push_back({ srcCol, fakeball });
 
-					// Calculate displacement required
-					float fOverlap = -(fDistance - srcCol->rad - fakeball->rad);
+					float fOverlap;
 
-					// Displace Current Ball away from collision
-					srcCol->entity->getComponent<TransformComponent>().moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
+					if (fDistance == 0)
+					{
+						cout << 0 << endl;
+
+						fDistance = 0.1;
+						fOverlap = srcCol->rad + fakeball->rad;
+
+					}
+					else
+					{
+						// Calculate displacement required
+						 fOverlap= -(fDistance - srcCol->rad - fakeball->rad);
+
+						// Displace Current Ball away from collision
+						srcCol->entity->getComponent<TransformComponent>().moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
+					}
 				}
+
 			}
 
 			for (int j = i + 1; j < colliders.size(); j++)

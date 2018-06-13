@@ -38,11 +38,19 @@ void TransformComponent::update() {
 	}
 
 	if (Mouse::buttonDown(GLFW_MOUSE_BUTTON_LEFT)) {
-		double x, y;
+		float x, y;
 		x = Mouse::getMouseX();
 		y = Mouse::getMouseY();
-		if (position.x <= x && (position.x + width) >= x &&
-			position.y <= y && (position.y + height) >= y)
+
+		
+		if (entity->hasComponent<LineComponent>())
+			radius = entity->getComponent<LineComponent>().radius;
+		else
+			radius = entity->getComponent<CircleColliderComponent>().rad;
+		
+		float dist= Utils::distance(vec2f(position.x+width/2, position.y+height/2), vec2f(x, y));
+
+		if (dist <= radius)
 		{
 			selected = true;
 			std::cout << "selected" << std::endl;
@@ -57,8 +65,16 @@ void TransformComponent::update() {
 		double x, y;
 		x = Mouse::getMouseX();
 		y = Mouse::getMouseY();
-		if (position.x <= x && (position.x + width) >= x &&
-			position.y <= y && (position.y + height) >= y) {
+
+		float dist = Utils::distance(vec2f(position.x+width/2, position.y+height/2), vec2f(x, y));
+
+		if (entity->hasComponent<LineComponent>())
+			radius = entity->getComponent<LineComponent>().radius;
+		else
+			radius = entity->getComponent<CircleColliderComponent>().rad;
+
+		if (dist <= radius)
+		{
 			fling = true;
 			std::cout << "fliging start" << std::endl;
 		}
