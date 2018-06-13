@@ -14,4 +14,6 @@ public:
 	static void drawLine(const vec2<float>& point1, const vec2<float>& point2, int width);
 
 	static void drawCircle(Texture* textue, const vec2<float>& center, const float rad);
+
+	static int random(int min, int max); //range : [min, max)
 };

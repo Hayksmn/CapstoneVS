@@ -17,17 +17,24 @@ int main(void) {
 	Engine engine;
 	engine.initialize((char*)"Capstone"); //TODO have to look into why i have to typecast const char* to char* for this to work
 
-	for (int i = 0; i < 5; i++) {
-		auto& line(manager.addEntity());
-		line.addComponent<LineComponent>(vec2<float>(100 + i * 100, i * 100), vec2<float>(500 + i * 100, i * 100), 15);
-	}
+	//for (int i = 0; i < 5; i++) {
+	//	auto& line(manager.addEntity());
+	//	line.addComponent<LineComponent>(vec2<float>(100 + i * 100, i * 100), vec2<float>(500 + i * 100, i * 100), 15);
+	//}
+
 	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
 
-		ball.addComponent<TransformComponent>(50 * i, 50 * i, 50, 50);
+		int randX = Utils::random(50, Engine::SCREEN_WIDTH - 50);
+		int randY = Utils::random(50, Engine::SCREEN_HEIGHT - 50);
+		int randSize = Utils::random(10, 100);
+
+		ball.addComponent<TransformComponent>(randX, randY, randSize, randSize);
 		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<KeyboardController>();
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
+
+		ball.getComponent<CircleColliderComponent>().mass = randSize*30;
 	}
 
 	bool running = true;
@@ -134,8 +141,6 @@ int main(void) {
 			for (int j = i + 1; j < colliders.size(); j++)
 			{
 				CircleColliderComponent *targetCol = colliders[j];
-				//TODO: find a better way to check if it's the same ball (maybe tag is not set)
-				//if (srcCol->tag != targetCol->tag) {
 				if (Collision::circle(*srcCol, *targetCol)) {
 
 
@@ -169,7 +174,6 @@ int main(void) {
 
 					currentCollisions.push_back({ srcCol, targetCol });
 				}
-				//}
 			}
 		}
 
@@ -278,11 +282,17 @@ int main(void) {
 			float m1 = (dpNorm1 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpNorm2) / (b1->mass + b2->mass);
 			float m2 = (dpNorm2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpNorm1) / (b1->mass + b2->mass);
 
+			float m12 = (dpTan1 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan1) / (b1->mass + b2->mass);
+			float m22 = (dpTan2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan2) / (b1->mass + b2->mass);
+
+
+			//float temp1 = vec2<float>::dot(m1, normal);
+
 			// Update ball velocities
-			vec2<float> dv11 = tangent * dpTan1;
+			vec2<float> dv11 = tangent * m12;
 			vec2<float> dv12 = normal * m1;
 			t1->velocity = dv11 + dv12;
-			vec2<float> dv21 = tangent * dpTan2;
+			vec2<float> dv21 = tangent * m22;
 			vec2<float> dv22 = normal * m2;
 			t2->velocity = dv21 + dv22;
 
