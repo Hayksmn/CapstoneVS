@@ -22,6 +22,10 @@ void LineComponent::init() {
 	Game::lines.push_back(this);
 }
 
+void LineComponent::setVisibility(bool visible) {
+	isVisibile = visible;
+}
+
 void LineComponent::update() {
 	if (startSelected) {
 		vec2<float> mousePos(Mouse::getMouseX(), Mouse::getMouseY());
@@ -50,16 +54,15 @@ void LineComponent::update() {
 }
 
 void LineComponent::draw() {
+	if (isVisibile) {
+		Utils::drawCircle(texture, startPoint, radius);
+		Utils::drawCircle(texture, endPoint, radius);
 
-	
+		vec2<float> normal(-(endPoint.y - startPoint.y), endPoint.x - startPoint.x);
+		normal.normalize();
+		normal *= radius;
 
-	Utils::drawCircle(texture, startPoint, radius);
-	Utils::drawCircle(texture, endPoint, radius);
-
-	vec2<float> normal(-(endPoint.y - startPoint.y), endPoint.x - startPoint.x);
-	normal.normalize();
-	normal *= radius;
-
-	Utils::drawLine(startPoint + normal, endPoint + normal, 2);
-	Utils::drawLine(startPoint - normal, endPoint - normal, 2);
+		Utils::drawLine(startPoint + normal, endPoint + normal, 2);
+		Utils::drawLine(startPoint - normal, endPoint - normal, 2);
+	}
 }

@@ -11,8 +11,6 @@
 class TouchComponent : public Component {
 
 private:
-	TransformComponent * transform;
-	CircleColliderComponent * collider;
 	bool selected = false;
 	bool fling = false;
 

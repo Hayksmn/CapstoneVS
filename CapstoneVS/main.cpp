@@ -17,18 +17,45 @@ int main(void) {
 	Engine engine;
 	engine.initialize((char*)"Capstone"); //TODO have to look into why i have to typecast const char* to char* for this to work
 
-	for (int i = 0; i < 5; i++) {
+	float borders[24] = {
+		42, 541,
+		42, 106,
+
+		106, 42,
+		541, 42,
+
+		106, 602,
+		541, 602,
+
+		626, 602,
+		1071, 602,
+
+		626, 42,
+		1071, 42,
+		1129, 541,
+		1129, 106
+	};
+
+	for (int i = 0; i < 24; i+=4) {
 		auto& line(manager.addEntity());
-		line.addComponent<LineComponent>(vec2<float>(100 + i * 100, i * 100), vec2<float>(500 + i * 100, i * 100), 15);
+		line.addComponent<LineComponent>(vec2<float>(borders[i], borders[i+1]), vec2<float>(borders[i+2], borders[i+3]), 15);
+		line.getComponent<LineComponent>().setVisibility(false);
 	}
+
 	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
 
-		ball.addComponent<TransformComponent>(50 * i, 50 * i, 50, 50);
+		ball.addComponent<TransformComponent>(Utils::random(106, 1068), Utils::random(106, 540), 45, 45);
+		ball.addComponent<SpriteComponent>("Assets/Art/8ball.png", "ball" + i + 1);
+		ball.addComponent<TouchComponent>();
 		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<KeyboardController>();
-		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
 	}
+
+	auto& background(manager.addEntity());
+	background.addComponent<TransformComponent>(0, 0, Engine::SCREEN_WIDTH, Engine::SCREEN_HEIGHT);
+	background.addComponent<SpriteComponent>("Assets/Art/background.png", "bcg");
+
 
 	bool running = true;
 	while (!glfwWindowShouldClose(Engine::window)) {
@@ -46,16 +73,6 @@ int main(void) {
 			CircleColliderComponent *srcCol = colliders[i];
 
 			TransformComponent* transform = &srcCol->entity->getComponent<TransformComponent>();
-
-			//temporary
-			if (srcCol->center.x < 0)
-				transform->position.x += Engine::SCREEN_WIDTH;
-			if (srcCol->center.x >= Engine::SCREEN_WIDTH)
-				transform->position.x -= Engine::SCREEN_WIDTH;
-			if (srcCol->center.y < 0)
-				transform->position.y += Engine::SCREEN_HEIGHT;
-			if (srcCol->center.y >= Engine::SCREEN_HEIGHT)
-				transform->position.y -= Engine::SCREEN_HEIGHT;
 
 			for (auto &edge : Game::lines) {
 

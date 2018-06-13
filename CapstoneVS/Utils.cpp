@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include <GLFW\glfw3.h>
+#include <time.h>
 
 float Utils::distance(const vec2<float>& point1, const vec2<float>& point2) {
 
@@ -47,4 +48,15 @@ void Utils::drawCircle(Texture* texture, const vec2<float>& center, const float 
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
+}
+
+int Utils::random(int min, int max) //range : [min, max)
+{
+	static bool first = true;
+	if (first)
+	{
+		std::srand(time(NULL)); //seeding for the first time only!
+		first = false;
+	}
+	return min + rand() % ((max + 1) - min);
 }

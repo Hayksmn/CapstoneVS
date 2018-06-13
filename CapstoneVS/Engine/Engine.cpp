@@ -5,8 +5,8 @@
 /// <summary>
 /// Initialize static variables.
 /// </summary>
-int Engine::SCREEN_WIDTH = 1024;
-int Engine::SCREEN_HEIGHT = 768;
+int Engine::SCREEN_WIDTH = 1173;
+int Engine::SCREEN_HEIGHT = 643;
 GLFWwindow* Engine::window = NULL;
 
 

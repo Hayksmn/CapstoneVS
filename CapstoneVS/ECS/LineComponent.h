@@ -13,6 +13,7 @@ private:
 	Texture * texture;
 	bool startSelected = false;
 	bool endSelected = false;
+	bool isVisibile = true;
 
 public:
 
@@ -22,6 +23,8 @@ public:
 
 	LineComponent();
 	LineComponent(vec2<float> start, vec2<float> end, float rad);
+
+	void setVisibility(bool visible);
 
 	void init() override;
 
