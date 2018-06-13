@@ -278,12 +278,6 @@ int main(void) {
 			float m12 = (dpTan2 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpTan1) / (b1->mass + b2->mass);
 			float m22 = (dpTan1 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan2) / (b1->mass + b2->mass);
 
-
-			//float temp1 = vec2<float>::dot(m1, normal);
-
-			float m12 = (dpTan1 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan1) / (b1->mass + b2->mass);
-			float m22 = (dpTan2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan2) / (b1->mass + b2->mass);
-
 			// Update ball velocities
 			vec2<float> dv11 = tangent * m12;
 			vec2<float> dv12 = normal * m1;
