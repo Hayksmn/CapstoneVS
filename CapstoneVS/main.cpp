@@ -278,11 +278,14 @@ int main(void) {
 			float m1 = (dpNorm1 * (b1->mass - b2->mass) + 2.0f * b2->mass * dpNorm2) / (b1->mass + b2->mass);
 			float m2 = (dpNorm2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpNorm1) / (b1->mass + b2->mass);
 
+			float m12 = (dpTan1 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan1) / (b1->mass + b2->mass);
+			float m22 = (dpTan2 * (b2->mass - b1->mass) + 2.0f * b1->mass * dpTan2) / (b1->mass + b2->mass);
+
 			// Update ball velocities
-			vec2<float> dv11 = tangent * dpTan1;
+			vec2<float> dv11 = tangent * m12;
 			vec2<float> dv12 = normal * m1;
 			t1->velocity = dv11 + dv12;
-			vec2<float> dv21 = tangent * dpTan2;
+			vec2<float> dv21 = tangent * m22;
 			vec2<float> dv22 = normal * m2;
 			t2->velocity = dv21 + dv22;
 
