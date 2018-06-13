@@ -19,7 +19,7 @@ int main(void) {
 
 	for (int i = 0; i < 5; i++) {
 		auto& line(manager.addEntity());
-		line.addComponent<LineComponent>(vec2<float>(100 + i* 100, i * 100), vec2<float>(500 + i * 100, i * 100), 15);
+		line.addComponent<LineComponent>(vec2<float>(100 + i * 100, i * 100), vec2<float>(500 + i * 100, i * 100), 15);
 	}
 	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
@@ -48,7 +48,7 @@ int main(void) {
 			TransformComponent* transform = &srcCol->entity->getComponent<TransformComponent>();
 
 			//temporary
-			if (srcCol->center.x < 0) 
+			if (srcCol->center.x < 0)
 				transform->position.x += Engine::SCREEN_WIDTH;
 			if (srcCol->center.x >= Engine::SCREEN_WIDTH)
 				transform->position.x -= Engine::SCREEN_WIDTH;
@@ -89,7 +89,7 @@ int main(void) {
 				{
 					cout << 0 << endl;
 
-					fDistance = 1;
+					fDistance = 0.1;
 
 				}
 
@@ -104,11 +104,11 @@ int main(void) {
 					//fake.addComponent<CircleColliderComponent>("fake");
 					Entity *fake = new Entity();
 					CircleColliderComponent* fakeball = &fake->addComponent<CircleColliderComponent>("fake");// &fake.getComponent<CircleColliderComponent>();
-					&fake->addComponent<TransformComponent>(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2*edge->radius, 2 * edge->radius);
+					&fake->addComponent<TransformComponent>(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2 * edge->radius, 2 * edge->radius);
 					fakeball->rad = edge->radius;
 					fakeball->mass = srcCol->mass * 0.8f;
 					fakeball->center = closestPoint;
-					
+
 					fakeball->entity->getComponent<TransformComponent>().velocity = srcCol->entity->getComponent<TransformComponent>().velocity * (-1);	// We will use these later to allow the lines to impart energy into ball
 																						// if the lines are moving, i.e. like pinball flippers
 
@@ -136,9 +136,9 @@ int main(void) {
 
 					//cout <<"" << 
 
-					TransformComponent* t1=&srcCol->entity->getComponent<TransformComponent>();
-					
-					TransformComponent* t2=&targetCol->entity->getComponent<TransformComponent>();
+					TransformComponent* t1 = &srcCol->entity->getComponent<TransformComponent>();
+
+					TransformComponent* t2 = &targetCol->entity->getComponent<TransformComponent>();
 
 
 
@@ -188,9 +188,9 @@ int main(void) {
 				b->friction -= 0.04f;
 			}
 
-			float fr=ball[0]->getComponent<TransformComponent>().friction;
+			float fr = ball[0]->getComponent<TransformComponent>().friction;
 
-			cout << "Friction"<<fr;
+			cout << "Friction" << fr;
 		}
 		if (Keyboard::keyDown(GLFW_KEY_UP))
 		{
@@ -203,11 +203,13 @@ int main(void) {
 
 			float fr = ball[0]->getComponent<TransformComponent>().friction;
 
-			cout << "Friction "<< fr;
+			cout << "Friction " << fr;
 		}
 
 		for (auto& c : currentCollisions) {
 			Utils::drawLine(c.first->center, c.second->center, 5);
+
+
 
 			CircleColliderComponent *b1 = c.first;
 			CircleColliderComponent *b2 = c.second;
@@ -218,11 +220,35 @@ int main(void) {
 			// Distance between balls
 			float fDistance = Utils::distance(b1->center, b2->center);
 
-			// Normal
-			float nx = (b2->center.x - b1->center.x) / fDistance;
-			float ny = (b2->center.y - b1->center.y) / fDistance;
-			vec2<float> normal(nx, ny);
+			float nx;
+			float ny;
+			vec2<float> normal;
 
+			if (fDistance == 0)
+			{
+				cout << 0 << endl;
+
+				fDistance = 0.1;
+				// Normal
+
+			
+
+
+				nx = (((float(rand()) / float(RAND_MAX)) * (0.2f)) - 0.1f) / fDistance;
+				ny = (((float(rand()) / float(RAND_MAX)) * (0.2f)) - 0.1f) / fDistance;
+				normal =  vec2<float>(nx, ny);
+
+				t1->velocity = normal;
+				t2->velocity = normal * -1;
+
+			}
+			else
+			{
+				// Normal
+				nx = (b2->center.x - b1->center.x) / fDistance;
+				ny = (b2->center.y - b1->center.y) / fDistance;
+				normal= vec2<float>(nx, ny);
+			}
 			// Tangent
 			vec2<float> tangent(-ny, nx);
 
