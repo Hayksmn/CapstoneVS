@@ -1,4 +1,4 @@
-#include"LineComponent.h"
+#include "Components.h"
 #include "Engine/IO/Mouse.h"
 #include "Utils.h"
 #include "Game.h"
@@ -16,6 +16,7 @@ LineComponent::LineComponent(vec2<float> start, vec2<float> end, float rad) {
 }
 
 void LineComponent::init() {
+	&entity->addComponent<TransformComponent>();
 	texture = new Texture("Assets/Art/circle.png");
 
 	Game::lines.push_back(this);
@@ -59,6 +60,6 @@ void LineComponent::draw() {
 	normal.normalize();
 	normal *= radius;
 
-	Utils::drawLine(startPoint + normal, endPoint + normal);
-	Utils::drawLine(startPoint - normal, endPoint - normal);
+	Utils::drawLine(startPoint + normal, endPoint + normal, 2);
+	Utils::drawLine(startPoint - normal, endPoint - normal, 2);
 }

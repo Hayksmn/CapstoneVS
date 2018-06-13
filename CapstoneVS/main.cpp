@@ -10,8 +10,6 @@
 using namespace std;
 
 Manager manager;
-//auto& ball1(manager.addEntity());
-
 
 int main(void) {
 	cout << "Hello!" << endl;
@@ -19,41 +17,17 @@ int main(void) {
 	Engine engine;
 	engine.initialize((char*)"Capstone"); //TODO have to look into why i have to typecast const char* to char* for this to work
 
-
-
-	//Sprite sprite = Sprite("Assets/Art/Biplane.png", 0, 0);
-	//sprite.setScale(0.25f);
-
-	//ball1.addComponent<TransformComponent>(100, 100);
-	//ball1.addComponent<KeyboardController>(); 
-	//ball1.addComponent<CircleColliderComponent>("initial ball");
-	//ball1.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball1");
-	//auto tex = newSprite.getComponent<SpriteComponent>().getTextureParams();
-
-	//todo: see why this gives a delay
-	//newSprite.getComponent<TransformComponent>().setScale(30/(float)tex.getWidth());
-
-	//cout << (ball1.hasComponent<TransformComponent>() ? "Yes!" : "NO") << endl;
-
-	auto& line(manager.addEntity());
-	line.addComponent<LineComponent>();
-	line.addComponent<LineComponent>(vec2<float>(500, 50), vec2<float>(700, 50), 15);
-	line.addComponent<LineComponent>(vec2<float>(300, 30), vec2<float>(600, 30), 15);
-	line.addComponent<LineComponent>(vec2<float>(300, 100), vec2<float>(600, 100), 15);
-
-	line.init();
-
+	for (int i = 0; i < 5; i++) {
+		auto& line(manager.addEntity());
+		line.addComponent<LineComponent>(vec2<float>(100 + i* 100, i * 100), vec2<float>(500 + i * 100, i * 100), 15);
+	}
 	for (int i = 0; i < 10; i++) {
 		auto& ball(manager.addEntity());
-		//TODO: setting width and height is buggy
 
-
-		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<TransformComponent>(50 * i, 50 * i, 50, 50);
+		ball.addComponent<CircleColliderComponent>("ball" + std::to_string(i));
 		ball.addComponent<KeyboardController>();
 		ball.addComponent<SpriteComponent>("Assets/Art/circle.png", "ball" + i + 1);
-		ball.init();
-		//ball.addComponent<TouchComponent>();
 	}
 
 	bool running = true;
@@ -63,12 +37,13 @@ int main(void) {
 
 		manager.update();
 
+		std::vector<CircleColliderComponent*> colliders = manager.getColliders();
 		vector<pair<CircleColliderComponent*, CircleColliderComponent*>> currentCollisions;
-		vector<CircleColliderComponent*> fakeBalls;
+		vector<Entity*> fakeEntities;
 
-		for (int i = 0; i <= Game::colliders.size() - 1; i++)
+		for (int i = 0; i <= colliders.size() - 1; i++)
 		{
-			CircleColliderComponent *srcCol = Game::colliders[i];
+			CircleColliderComponent *srcCol = colliders[i];
 
 			TransformComponent* transform = &srcCol->entity->getComponent<TransformComponent>();
 
@@ -121,16 +96,15 @@ int main(void) {
 				if (fDistance <= (srcCol->rad + edge->radius))
 				{
 
-
-
 					cout << "t = " << t << std::endl;
 					// Collision has occurred - treat collision point as a ball that cannot move. To make this
 					// compatible with the dynamic resolution code below, we add a fake ball with an infinite mass
 					// so it behaves like a solid object when the momentum calculations are performed
 					//auto& fake(manager.addEntity());
 					//fake.addComponent<CircleColliderComponent>("fake");
-					CircleColliderComponent *fakeball = new CircleColliderComponent("fake");// &fake.getComponent<CircleColliderComponent>();
-					fakeball->entity->addComponent<TransformComponent>(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2*edge->radius, 2 * edge->radius);
+					Entity *fake = new Entity();
+					CircleColliderComponent* fakeball = &fake->addComponent<CircleColliderComponent>("fake");// &fake.getComponent<CircleColliderComponent>();
+					&fake->addComponent<TransformComponent>(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2*edge->radius, 2 * edge->radius);
 					fakeball->rad = edge->radius;
 					fakeball->mass = srcCol->mass * 0.8f;
 					fakeball->center = closestPoint;
@@ -139,7 +113,7 @@ int main(void) {
 																						// if the lines are moving, i.e. like pinball flippers
 
 					// Store Fake Ball
-					fakeBalls.push_back(fakeball);
+					fakeEntities.push_back(fake);
 
 					// Add collision to vector of collisions for dynamic resolution
 					currentCollisions.push_back({ srcCol, fakeball });
@@ -152,9 +126,9 @@ int main(void) {
 				}
 			}
 
-			for (int j = i + 1; j < Game::colliders.size(); j++)
+			for (int j = i + 1; j < colliders.size(); j++)
 			{
-				CircleColliderComponent *targetCol = Game::colliders[j];
+				CircleColliderComponent *targetCol = colliders[j];
 				//TODO: find a better way to check if it's the same ball (maybe tag is not set)
 				//if (srcCol->tag != targetCol->tag) {
 				if (Collision::circle(*srcCol, *targetCol)) {
@@ -172,10 +146,13 @@ int main(void) {
 
 					float overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
 
-					t1->moveBy(-overlap * (srcCol->center.x - targetCol->center.x) / dst,
-						-overlap * (srcCol->center.y - targetCol->center.y) / dst);
-					t2->moveBy(overlap * (srcCol->center.x - targetCol->center.x) / dst,
-						overlap * (srcCol->center.y - targetCol->center.y) / dst);
+					float xDst = srcCol->center.x - targetCol->center.x;
+					float yDst = srcCol->center.y - targetCol->center.y;
+
+					t1->moveBy(-overlap * xDst / dst,
+						-overlap * yDst / dst);
+					t2->moveBy(overlap * xDst / dst,
+						overlap * yDst / dst);
 
 					currentCollisions.push_back({ srcCol, targetCol });
 				}
@@ -229,12 +206,8 @@ int main(void) {
 			cout << "Friction "<< fr;
 		}
 
-
-
-		//newSprite.getComponent<TransformComponent>().moveTo((float)Mouse::getMouseX(), (float)Mouse::getMouseY());
-
 		for (auto& c : currentCollisions) {
-			Utils::drawLine(c.first->center, c.second->center);
+			Utils::drawLine(c.first->center, c.second->center, 5);
 
 			CircleColliderComponent *b1 = c.first;
 			CircleColliderComponent *b2 = c.second;
@@ -284,13 +257,13 @@ int main(void) {
 			//b2->vy = b2->vy + p * b1->mass * ny;
 		}
 
-		for (auto& f : fakeBalls) delete f;
-		fakeBalls.clear();
+		for (auto& f : fakeEntities) {
+			delete f;
+		}
+		fakeEntities.clear();
 
 		engine.beginRender();
-
 		manager.draw();
-
 		engine.endRender();
 
 		Keyboard::reset();
