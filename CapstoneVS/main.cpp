@@ -110,6 +110,14 @@ int main(void) {
 				// same way we check if two balls have collided
 				float fDistance = Utils::distance(srcCol->center, closestPoint);
 
+				if (fDistance == 0)
+				{
+					cout << 0 << endl;
+
+					fDistance = 1;
+
+				}
+
 				if (fDistance <= (srcCol->rad + edge->radius))
 				{
 
