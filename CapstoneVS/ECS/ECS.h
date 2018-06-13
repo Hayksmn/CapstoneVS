@@ -9,6 +9,7 @@
 
 class Component;
 class Entity;
+class CircleColliderComponent;
 
 using ComponentID = std::size_t;
 
@@ -49,6 +50,7 @@ private:
 	ComponentBitSet componentBitSet;
 
 public:
+
 	void update() {
 		for (auto& c : components) {
 			c->update();
@@ -60,14 +62,6 @@ public:
 			c->draw();
 		}
 	};
-
-	void init() {
-		for (auto& c : components) {
-			c->init();
-		}
-	};
-	
-
 
 	bool isActive() {
 		return active;
@@ -84,17 +78,22 @@ public:
 
 	template <typename T, typename... TArgs>
 	T& addComponent(TArgs... mArgs) {
-		T* c(new T(std::forward<TArgs>(mArgs)...));
-		c->entity = this;
-		std::unique_ptr<Component> uPtr{ c };
-		components.emplace_back(std::move(uPtr));
+		if (hasComponent<T>()) {
+			return getComponent<T>();
+		}
+		else {
+			T* c(new T(std::forward<TArgs>(mArgs)...));
+			c->entity = this;
+			std::unique_ptr<Component> uPtr{ c };
+			components.emplace_back(std::move(uPtr));
 
-		componentArray[getComponentTypeID<T>()] = c;
-		componentBitSet[getComponentTypeID<T>()] = true;
+			componentArray[getComponentTypeID<T>()] = c;
+			componentBitSet[getComponentTypeID<T>()] = true;
 
-		//c->init();
+			c->init();
 
-		return *c;
+			return *c;
+		}
 	}
 
 	template<typename T> T& getComponent() const {
@@ -144,5 +143,15 @@ public:
 		std::unique_ptr<Entity> uPtr{ e };
 		entities.emplace_back(std::move(uPtr));
 		return *e;
+	}
+
+	std::vector<CircleColliderComponent*> getColliders() {
+		std::vector<CircleColliderComponent*> colliders;
+		for (auto& e : entities) {
+			if (e->hasComponent<CircleColliderComponent>()) {
+				colliders.push_back(&e->getComponent<CircleColliderComponent>());
+			}
+		}
+		return colliders;
 	}
 };

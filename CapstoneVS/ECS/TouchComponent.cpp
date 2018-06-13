@@ -63,6 +63,6 @@ void TouchComponent::update() {
 
 void TouchComponent::draw() {
 	if (fling) {
-		Utils::drawLine(collider->center, vec2<float>((float)Mouse::getMouseX(), (float)Mouse::getMouseY()));
+		Utils::drawLine(collider->center, vec2<float>((float)Mouse::getMouseX(), (float)Mouse::getMouseY()), 5);
 	}
 }

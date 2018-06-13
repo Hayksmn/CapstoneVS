@@ -83,11 +83,11 @@ void TransformComponent::update() {
 	velocity *= friction;
 
 
-	CircleColliderComponent* ccc = &entity->getComponent<CircleColliderComponent>();
+	//CircleColliderComponent* ccc = &entity->getComponent<CircleColliderComponent>();
 
-	ccc->center.x = position.x + width / 2;
-	ccc->center.y = position.y + height / 2;
-	ccc->rad = width / 2;
+	//ccc->center.x = position.x + width / 2;
+	//ccc->center.y = position.y + height / 2;
+	//ccc->rad = width / 2;
 
 
 	if (fabs(velocity.x*velocity.x + velocity.y*velocity.y) < 0.001f)
@@ -161,6 +161,6 @@ void TransformComponent::setHeight(float h) {
 
 void TransformComponent::draw() {
 	if (fling) {
-		Utils::drawLine(vec2f((position.x + (width)/2), (position.y + (height) / 2)), vec2<float>((float)Mouse::getMouseX(), (float)Mouse::getMouseY()));
+		Utils::drawLine(vec2f((position.x + (width)/2), (position.y + (height) / 2)), vec2<float>((float)Mouse::getMouseX(), (float)Mouse::getMouseY()), 5);
 	}
 }
