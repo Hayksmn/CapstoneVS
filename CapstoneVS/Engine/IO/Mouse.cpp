@@ -45,16 +45,21 @@ double Mouse::getMouseY() {
 
 bool Mouse::buttonDown(int button) {
         bool x = buttonsDown[button];
-        buttonsDown[button] = false;
+        //buttonsDown[button] = false;
         return x;
 }
 
 bool Mouse::buttonUp(int button) {
         bool x = buttonsUp[button];
-        buttonsUp[button] = false;
+        //buttonsUp[button] = false;
         return x;
 }
 
 bool Mouse::button(int button) {
         return buttons[button];
+}
+
+void Mouse::reset() {
+		memset(buttonsUp, false, GLFW_MOUSE_BUTTON_LAST * sizeof(bool));
+		memset(buttonsDown, false, GLFW_MOUSE_BUTTON_LAST * sizeof(bool));
 }

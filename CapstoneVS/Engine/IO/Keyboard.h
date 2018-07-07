@@ -2,6 +2,7 @@
 #define MAIN_KEYBOARD
 
 #include "GLFW\glfw3.h"
+#include <string.h>
 
 class Keyboard {
 public:
@@ -10,6 +11,9 @@ public:
         static bool keyDown(int key);
         static bool keyUp(int key);
         static bool key(int key);
+
+		static void reset();
+
 private:
         static bool keys[];
         static bool keysDown[];

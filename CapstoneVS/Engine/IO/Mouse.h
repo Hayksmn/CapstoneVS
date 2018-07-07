@@ -2,6 +2,7 @@
 #define MAIN_MOUSE
 
 #include <GLFW\glfw3.h>
+#include <string.h>
 
 //making stuff static so that 1 class handles all mouse inputs
 class Mouse {
@@ -15,6 +16,8 @@ public:
         static bool buttonDown(int button);
         static bool buttonUp(int button);
         static bool button(int button); 
+
+		static void reset();
 
 private: 
         static double x;

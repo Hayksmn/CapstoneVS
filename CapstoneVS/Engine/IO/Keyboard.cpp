@@ -24,16 +24,21 @@ void Keyboard::keyCallback(GLFWwindow* window, int key, int scancode, int action
 
 bool Keyboard::keyDown(int key) {
         bool x = keysDown[key];
-        keysDown[key] = false;
+        //keysDown[key] = false;
         return x;
 }
 
 bool Keyboard::keyUp(int key) {
         bool x = keysUp[key];
-        keysUp[key] = false;
+        //keysUp[key] = false;
         return x;
 }
 
 bool Keyboard::key(int key) {
         return keys[key];
  }
+
+void Keyboard::reset() {
+	memset(keysUp, false, GLFW_KEY_LAST * sizeof(bool));
+	memset(keysDown, false, GLFW_KEY_LAST * sizeof(bool));
+}

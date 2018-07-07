@@ -5,8 +5,8 @@
 /// <summary>
 /// Initialize static variables.
 /// </summary>
-int Engine::SCREEN_WIDTH = 1024;
-int Engine::SCREEN_HEIGHT = 768;
+int Engine::SCREEN_WIDTH = 1173;
+int Engine::SCREEN_HEIGHT = 643;
 GLFWwindow* Engine::window = NULL;
 
 
@@ -64,9 +64,11 @@ bool Engine::initialize(char* windowTitle) {
         glDepthRange(-10, 10);
         glMatrixMode(GL_MODELVIEW);
 
+		glEnable(GL_DEPTH_TEST);
+
         //Alpha blending
         glEnable(GL_ALPHA_TEST);
-        glEnable(GL_BLEND);
+		glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         return true;
@@ -83,8 +85,9 @@ void Engine::update() {
 /// Starts rendering everything in back buffer.
 /// </summary>
 void Engine::beginRender() {
-        glClearColor(0, 0, 1, 1); //cleared back buffer and set to blue
+        glClearColor(0, 0, 0, 0); //cleared back buffer and set to blue
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //cleared the depth buffer
+		glAlphaFunc(GL_GREATER, 0);
 }
 
 void Engine::endRender(){
