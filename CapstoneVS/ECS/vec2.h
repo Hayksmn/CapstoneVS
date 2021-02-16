@@ -3,6 +3,7 @@
 #define __VEC2_H__
 
 #include <cmath>
+#include <corecrt_math_defines.h>
 
 
 template <class T>
