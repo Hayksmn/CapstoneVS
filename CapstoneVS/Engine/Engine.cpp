@@ -27,7 +27,7 @@ Engine::~Engine() {}
 /// </summary>
 /// <param name="windowTitle">Takes the window title as a char* parameter.</param>
 /// <returns>boolean value indicating whether initialization has concluded successfully or not</returns>
-bool Engine::initialize(char* windowTitle) {
+bool Engine::initialize(const char* windowTitle) {
 
         //Initializing GLFW
         if (!glfwInit()) {

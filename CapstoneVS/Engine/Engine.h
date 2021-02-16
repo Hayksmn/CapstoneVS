@@ -15,7 +15,7 @@ public:
         Engine();
         ~Engine();
 
-        bool initialize(char* windowTitle);
+        bool initialize(const char* windowTitle);
 
         void update(); 
         void beginRender(); 

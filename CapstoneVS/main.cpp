@@ -15,7 +15,8 @@ int main(void) {
 	cout << "Hello!" << endl;
 
 	Engine engine;
-	engine.initialize((char*)"Capstone"); //TODO have to look into why i have to typecast const char* to char* for this to work
+	engine.initialize("Capstone"); //TODO have to look into why i have to typecast const char* to char* for this to work
+	//now you dont )
 
 	float borders[24] = {
 		42, 541,
@@ -260,9 +261,6 @@ int main(void) {
 
 				fDistance = 0.1;
 				// Normal
-
-
-
 
 				nx = (((float(rand()) / float(RAND_MAX)) * (0.2f)) - 0.1f) / fDistance;
 				ny = (((float(rand()) / float(RAND_MAX)) * (0.2f)) - 0.1f) / fDistance;
