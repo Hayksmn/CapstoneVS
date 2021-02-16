@@ -75,8 +75,9 @@ int main(void) {
 
 			TransformComponent* transform = &srcCol->entity->getComponent<TransformComponent>();
 			
+			#pragma region Circle to line collision
 			//line to circle
-			for (auto &edge : Game::lines) {
+			for (auto& edge : Game::lines) {
 
 				// Check that line formed by velocity vector, intersects with line segment
 				vec2<float> line1 = edge->endPoint - edge->startPoint;
@@ -115,7 +116,7 @@ int main(void) {
 					// so it behaves like a solid object when the momentum calculations are performed
 					//auto& fake(manager.addEntity());
 					//fake.addComponent<CircleColliderComponent>("fake");
-					Entity *fake = new Entity();
+					Entity* fake = new Entity();
 					CircleColliderComponent* fakeball = &fake->addComponent<CircleColliderComponent>("fake");// &fake.getComponent<CircleColliderComponent>();
 					&fake->addComponent<TransformComponent>(closestPoint.x - edge->radius, closestPoint.y - edge->radius, 2 * edge->radius, 2 * edge->radius);
 					fakeball->rad = edge->radius;
@@ -146,14 +147,17 @@ int main(void) {
 					// Displace Current Ball away from collision
 					srcCol->entity->getComponent<TransformComponent>().moveBy(fOverlap * (srcCol->center.x - fakeball->center.x) / fDistance, fOverlap * (srcCol->center.y - fakeball->center.y) / fDistance);
 
+					//fake
 				}
 
 			}
-
+#pragma endregion
+			
+			#pragma region Circle To Circle
 			//circle to circle
 			for (int j = i + 1; j < colliders.size(); j++)
 			{
-				CircleColliderComponent *targetCol = colliders[j];
+				CircleColliderComponent* targetCol = colliders[j];
 				//TODO: find a better way to check if it's the same ball (maybe tag is not set)
 				//if (srcCol->tag != targetCol->tag) {
 				if (Collision::circle(*srcCol, *targetCol)) {
@@ -177,7 +181,7 @@ int main(void) {
 
 					}
 
-					float overlap = 0.5f*(dst - srcCol->rad - targetCol->rad);
+					float overlap = 0.5f * (dst - srcCol->rad - targetCol->rad);
 
 					float xDst = srcCol->center.x - targetCol->center.x;
 					float yDst = srcCol->center.y - targetCol->center.y;
@@ -191,7 +195,12 @@ int main(void) {
 				}
 				//}
 			}
+#pragma endregion
+
+			
 		}
+
+
 
 		if (Keyboard::keyDown(GLFW_KEY_R))
 		{
@@ -225,6 +234,7 @@ int main(void) {
 
 			cout << "Friction" << fr;
 		}
+
 		if (Keyboard::keyDown(GLFW_KEY_UP))
 		{
 			auto& ball(manager.getEntities());
@@ -239,6 +249,17 @@ int main(void) {
 			cout << "Friction " << fr;
 		}
 
+
+		if (Keyboard::keyDown(GLFW_KEY_D)) {
+
+			auto mX = Mouse::getMouseX();
+			auto mY = Mouse::getMouseY();
+			if (mX > 0 && mX < Engine::SCREEN_WIDTH && mY>0 && mY < Engine::SCREEN_HEIGHT)
+			{
+				auto& line(manager.addEntity());
+				line.addComponent<LineComponent>();
+			}
+		}
 
 		//resolve collisions
 		for (auto& c : currentCollisions) {
