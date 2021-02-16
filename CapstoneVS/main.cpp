@@ -74,7 +74,8 @@ int main(void) {
 			CircleColliderComponent *srcCol = colliders[i];
 
 			TransformComponent* transform = &srcCol->entity->getComponent<TransformComponent>();
-
+			
+			//line to circle
 			for (auto &edge : Game::lines) {
 
 				// Check that line formed by velocity vector, intersects with line segment
@@ -149,6 +150,7 @@ int main(void) {
 
 			}
 
+			//circle to circle
 			for (int j = i + 1; j < colliders.size(); j++)
 			{
 				CircleColliderComponent *targetCol = colliders[j];
@@ -237,6 +239,8 @@ int main(void) {
 			cout << "Friction " << fr;
 		}
 
+
+		//resolve collisions
 		for (auto& c : currentCollisions) {
 			Utils::drawLine(c.first->center, c.second->center, 5);
 

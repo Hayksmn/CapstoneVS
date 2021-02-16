@@ -68,6 +68,8 @@ public:
 		y *= s;
 		return *this;
 	}
+
+	//override division divides vector by scalar
 	vec2& operator/=(double s) {
 		x /= s;
 		y /= s;
